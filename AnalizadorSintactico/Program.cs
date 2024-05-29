@@ -2,7 +2,6 @@
 using System;
 using System.Text.RegularExpressions;
 
-Console.WriteLine("Hola mundo");
 
 //Palabras reservadas
 string[] palabrasReversvadas = { 
@@ -80,7 +79,7 @@ Cadena cadena;
 //Lista
 List<Entero> enteroList = new List<Entero>();
 
-
+Dictionary<string, bool> variables = new Dictionary<string, bool>();
 while (true)
 {
     Console.Write("Ingrese un string: ");
@@ -153,7 +152,7 @@ while (true)
         Console.WriteLine("Nombre de la variable: " + mishort.nombre);
         Console.WriteLine("Valor: " + mishort.valor);
     }
-    //Long
+
     else if (Regex.IsMatch(valor, patronLongValConValor) || Regex.IsMatch(valor, patronLongVarConValor))
     {
         int inicioNombre = valor.IndexOf(' ');
@@ -331,7 +330,103 @@ while (true)
         Console.WriteLine("Valor: " + cadena.valor);
     }
     else
+    {
+        if (Regex.IsMatch(valor, patronStringVal))
+        {
+            int inicioNombrevarriable = valor.IndexOf(' ') + 1;
+            int finNombrevarriable = valor.IndexOf(':');
+            string nombrevarriable = valor.Substring(inicioNombrevarriable, finNombrevarriable - inicioNombrevarriable).Trim();
+
+            if (variables.ContainsKey(nombrevarriable))
+            {
+                Console.WriteLine($"Ya exiate una variable con este nombre'{nombrevarriable}'");
+                continue;
+            }
+            else
+            {
+                variables[nombrevarriable] = true;
+            }
+        }
+        // Validación adicional
+        bool nombreValido = true;
+        string mensajeError = "Entrada no válida: ";
+
+        // Verificar si es "var" o "val"
+        if (!(valor.StartsWith("var ") || valor.StartsWith("val ")))
+        {
+            nombreValido = false;
+            mensajeError += "debe comenzar con 'var' o 'val'. ";
+        }
+
+        // Verificar si el nombre contiene espacio o empieza con un número
+        int inicioNombre = valor.IndexOf(' ') + 1;
+        int finNombre = valor.IndexOf(':');
+        if (finNombre > inicioNombre)
+        {
+            string nombre = valor.Substring(inicioNombre, finNombre - inicioNombre).Trim();
+            if (nombre.Contains(' ') || char.IsDigit(nombre[0]))
+            {
+                nombreValido = false;
+                mensajeError += "el nombre no debe contener espacios ni empezar con un número. ";
+            }
+        }
+
+        // Verificar si tiene dos puntos
+        if (!valor.Contains(":"))
+        {
+            nombreValido = false;
+            mensajeError += "debe contener ':'. ";
+        }
+
+        // Verificar si tiene un tipo de dato
+        bool tipoValido = false;
+        foreach (var tipo in new[] { "Int", "Short", "Long", "Float", "Double", "Boolean", "Char", "String" })
+        {
+            if (valor.Contains($": {tipo}"))
+            {
+                tipoValido = true;
+                break;
+            }
+        }
+        if (!tipoValido)
+        {
+            nombreValido = false;
+            mensajeError += "debe contener un tipo de dato válido. ";
+        }
+        //Verificar si el nombre contiene espacios o empieza con numeros
+        int inicioNombre2 = valor.IndexOf(' ') + 1;
+        int finNombre2 = valor.IndexOf(':');
+        if (finNombre2 > inicioNombre2)
+        {
+            string nombre2 = valor.Substring(inicioNombre2, finNombre2 - inicioNombre2).Trim();
+            if (!nombre2.Contains(' ') || char.IsDigit(nombre2[0]))
+            {
+                nombreValido = false;
+                mensajeError += "el nombre no debe contener espacios ni empezar con un número. ";
+            }
+        }
+
+        // Verificar si tiene el signo igual
+        if (!valor.Contains("="))
+        {
+            nombreValido = false;
+            mensajeError += "debe contener '='. ";
+        }
+
+        if (!nombreValido)
+        {
+            Console.WriteLine(mensajeError);
+        }
+        else
+        {
+            Console.WriteLine("Entrada no válida.");
+        }
+
+
         Console.WriteLine("Syntaxis incorrecta");
+
+    }
+
 
     Console.WriteLine();
 }
