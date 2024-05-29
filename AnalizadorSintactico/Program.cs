@@ -1,4 +1,6 @@
-﻿using System.Text.RegularExpressions;
+﻿using AnalizadorSintactico;
+using System;
+using System.Text.RegularExpressions;
 
 Console.WriteLine("Hola mundo");
 
@@ -64,92 +66,272 @@ string patronStringVal = @"^val _?[A-Za-z0-9]*: String$";
 string patronStringVarConValor = @"^var _?[A-Za-z0-9]*: String = ""[^""]*""$";
 string patronStringVar = @"^var _?[A-Za-z0-9]*: String$";
 
+
+//Clases
+Entero entero;
+Short mishort;
+Long milong;
+Float mifloat;
+miDouble midouble;
+miBoolean boolean;
+miChar michar;
+Cadena cadena;
+
+//Lista
+List<Entero> enteroList = new List<Entero>();
+
+
 while (true)
 {
     Console.Write("Ingrese un string: ");
     string valor = Console.ReadLine();
 
-    if (Regex.IsMatch(valor, patronEnteroValConValor) || Regex.IsMatch(valor, patronEnteroVal)
-        || Regex.IsMatch(valor, patronEnteroVarConValor) || Regex.IsMatch(valor, patronEnteroVar))
+    //Entero
+    if (Regex.IsMatch(valor, patronEnteroValConValor) || Regex.IsMatch(valor, patronEnteroVarConValor))
     {
-        Console.WriteLine("Todo correcto");
-        Console.WriteLine(valor);
+        int inicioNombre = valor.IndexOf(' ');
+        int finNombre = valor.IndexOf(':');
+        string nombre = valor.Substring(inicioNombre + 1, finNombre - 4);
 
         int indiceIgual = valor.IndexOf('='); // Encuentra la posición del signo '='
         string valorDespuesDelIgual = valor.Substring(indiceIgual + 1); // Obtén la parte de la cadena después del signo '='
-        Console.WriteLine("Valor después del signo '=': " + valorDespuesDelIgual);
+
+        entero = new Entero(nombre, int.Parse(valorDespuesDelIgual));
+        enteroList.Add(entero);
+
+        Console.WriteLine("Nombre de la variable: " + entero.nombre);
+        Console.WriteLine("Valor: " + entero.valor);
     }
-
-    else if (Regex.IsMatch(valor, patronShortValConValor) || Regex.IsMatch(valor, patronShortVal)
-        || Regex.IsMatch(valor, patronShortVarConValor) || Regex.IsMatch(valor, patronShortVar))
+    //Entero
+    else if (Regex.IsMatch(valor, patronEnteroVal) || Regex.IsMatch(valor, patronEnteroVar))
     {
-        Console.WriteLine("Todo correcto");
-        Console.WriteLine(valor);
+        int inicioNombre = valor.IndexOf(' ');
+        int finNombre = valor.IndexOf(':');
+        string nombre = valor.Substring(inicioNombre + 1, finNombre - 4);
 
-        int indiceIgual = valor.IndexOf('='); // Encuentra la posición del signo '='
-        string valorDespuesDelIgual = valor.Substring(indiceIgual + 1); // Obtén la parte de la cadena después del signo '='
-        Console.WriteLine("Valor después del signo '=': " + valorDespuesDelIgual);
+        entero = new Entero(nombre);
+        enteroList.Add(entero);
+
+        Console.WriteLine("Nombre de la variable: " + entero.nombre);
+        //Console.WriteLine("Valor: " + entero.valor);
+
+        Console.WriteLine("Imprimiendo el nombre de este lado: " + nombre);
+        Console.WriteLine("Probando la lista: ");
+
+        ///Aqui hay algo raro, no se porque con " " me da null reference...
+        var num1 = enteroList.FirstOrDefault(e => e.nombre.Equals("num1"));
+        //var num2 = enteroList.FirstOrDefault(e => e.nombre == "num2");
+
+
+        Console.WriteLine("Variable1: " + num1?.nombre);
+        //Console.WriteLine("Variable2: " + num2.nombre);
     }
-    else if (Regex.IsMatch(valor, patronLongValConValor) || Regex.IsMatch(valor, patronLongVal)
-        || Regex.IsMatch(valor, patronLongVarConValor) || Regex.IsMatch(valor, patronLongVar))
+    //Short
+    else if (Regex.IsMatch(valor, patronShortValConValor) ||  Regex.IsMatch(valor, patronShortVarConValor))
     {
-        Console.WriteLine("Todo correcto");
-        Console.WriteLine(valor);
+        int inicioNombre = valor.IndexOf(' ');
+        int finNombre = valor.IndexOf(':');
+        string nombre = valor.Substring(inicioNombre + 1, finNombre - 4);
 
         int indiceIgual = valor.IndexOf('='); // Encuentra la posición del signo '='
         string valorDespuesDelIgual = valor.Substring(indiceIgual + 1); // Obtén la parte de la cadena después del signo '='
-        Console.WriteLine("Valor después del signo '=': " + valorDespuesDelIgual);
+
+        mishort = new Short(nombre, short.Parse(valorDespuesDelIgual));
+
+        Console.WriteLine("Nombre de la variable: " + mishort.nombre);
+        Console.WriteLine("Valor: " + mishort.valor);
     }
-    else if (Regex.IsMatch(valor, patronFloatValConValor) || Regex.IsMatch(valor, patronFloatVal)
-        || Regex.IsMatch(valor, patronFloatVarConValor) || Regex.IsMatch(valor, patronFloatVar))
+    //Short
+    else if (Regex.IsMatch(valor, patronShortVal) || Regex.IsMatch(valor, patronShortVar))
     {
-        Console.WriteLine("Todo correcto");
-        Console.WriteLine(valor);
+        int inicioNombre = valor.IndexOf(' ');
+        int finNombre = valor.IndexOf(':');
+        string nombre = valor.Substring(inicioNombre + 1, finNombre - 4);
 
-        int indiceIgual = valor.IndexOf('='); // Encuentra la posición del signo '='
-        string valorDespuesDelIgual = valor.Substring(indiceIgual + 1); // Obtén la parte de la cadena después del signo '='
-        Console.WriteLine("Valor después del signo '=': " + valorDespuesDelIgual);
+        mishort = new Short(nombre);
+
+        Console.WriteLine("Nombre de la variable: " + mishort.nombre);
+        Console.WriteLine("Valor: " + mishort.valor);
     }
-    else if (Regex.IsMatch(valor, patronDoubleValConValor) || Regex.IsMatch(valor, patronDoubleVal)
-        || Regex.IsMatch(valor, patronDoubleVarConValor) || Regex.IsMatch(valor, patronDoubleVar))
+    //Long
+    else if (Regex.IsMatch(valor, patronLongValConValor) || Regex.IsMatch(valor, patronLongVarConValor))
     {
-        Console.WriteLine("Todo correcto");
-        Console.WriteLine(valor);
+        int inicioNombre = valor.IndexOf(' ');
+        int finNombre = valor.IndexOf(':');
+        string nombre = valor.Substring(inicioNombre + 1, finNombre - 4);
 
         int indiceIgual = valor.IndexOf('='); // Encuentra la posición del signo '='
         string valorDespuesDelIgual = valor.Substring(indiceIgual + 1); // Obtén la parte de la cadena después del signo '='
-        Console.WriteLine("Valor después del signo '=': " + valorDespuesDelIgual);
+
+        milong = new Long(nombre, long.Parse(valorDespuesDelIgual));
+
+        Console.WriteLine("Nombre de la variable: " + milong.nombre);
+        Console.WriteLine("Valor: " + milong.valor);
     }
-    else if (Regex.IsMatch(valor, patronBooleanValConValor) || Regex.IsMatch(valor, patronBooleanVal)
-        || Regex.IsMatch(valor, patronBooleanVarConValor) || Regex.IsMatch(valor, patronBooleanVar))
+    //Long
+    else if (Regex.IsMatch(valor, patronLongVal) || Regex.IsMatch(valor, patronLongVar))
     {
-        Console.WriteLine("Todo correcto");
-        Console.WriteLine(valor);
+        int inicioNombre = valor.IndexOf(' ');
+        int finNombre = valor.IndexOf(':');
+        string nombre = valor.Substring(inicioNombre + 1, finNombre - 4);
 
-        int indiceIgual = valor.IndexOf('='); // Encuentra la posición del signo '='
-        string valorDespuesDelIgual = valor.Substring(indiceIgual + 1); // Obtén la parte de la cadena después del signo '='
-        Console.WriteLine("Valor después del signo '=': " + valorDespuesDelIgual);
+        milong = new Long(nombre);
+
+        Console.WriteLine("Nombre de la variable: " + milong.nombre);
+        Console.WriteLine("Valor: " + milong.valor);
     }
-    else if (Regex.IsMatch(valor, patronCharValConValor) || Regex.IsMatch(valor, patronCharVal)
-        || Regex.IsMatch(valor, patronCharVarConValor) || Regex.IsMatch(valor, patronCharVar))
+    //Float
+    else if (Regex.IsMatch(valor, patronFloatValConValor) || Regex.IsMatch(valor, patronFloatVarConValor))
     {
-        Console.WriteLine("Todo correcto");
-        Console.WriteLine(valor);
+        int inicioNombre = valor.IndexOf(' ');
+        int finNombre = valor.IndexOf(':');
+        string nombre = valor.Substring(inicioNombre + 1, finNombre - 4);
 
         int indiceIgual = valor.IndexOf('='); // Encuentra la posición del signo '='
         string valorDespuesDelIgual = valor.Substring(indiceIgual + 1); // Obtén la parte de la cadena después del signo '='
-        Console.WriteLine("Valor después del signo '=': " + valorDespuesDelIgual);
+
+        mifloat = new Float(nombre, float.Parse(valorDespuesDelIgual));
+
+        Console.WriteLine("Nombre de la variable: " + mifloat.nombre);
+        Console.WriteLine("Valor: " + mifloat.valor);
     }
-    else if (Regex.IsMatch(valor, patronStringValConValor) || Regex.IsMatch(valor, patronStringVal)
-        || Regex.IsMatch(valor, patronStringVarConValor) || Regex.IsMatch(valor, patronStringVar))
+    //Float
+    else if (Regex.IsMatch(valor, patronFloatVal) || Regex.IsMatch(valor, patronFloatVar))
     {
-        Console.WriteLine("Todo correcto");
-        Console.WriteLine(valor);
+        int inicioNombre = valor.IndexOf(' ');
+        int finNombre = valor.IndexOf(':');
+        string nombre = valor.Substring(inicioNombre + 1, finNombre - 4);
+
+        mifloat = new Float(nombre);
+
+        Console.WriteLine("Nombre de la variable: " + mifloat.nombre);
+        Console.WriteLine("Valor: " + mifloat.valor);
+    }
+    //Double
+    else if (Regex.IsMatch(valor, patronDoubleValConValor) || Regex.IsMatch(valor, patronDoubleVarConValor))
+    {
+        int inicioNombre = valor.IndexOf(' ');
+        int finNombre = valor.IndexOf(':');
+        string nombre = valor.Substring(inicioNombre + 1, finNombre - 4);
 
         int indiceIgual = valor.IndexOf('='); // Encuentra la posición del signo '='
         string valorDespuesDelIgual = valor.Substring(indiceIgual + 1); // Obtén la parte de la cadena después del signo '='
-        Console.WriteLine("Valor después del signo '=': " + valorDespuesDelIgual);
+
+        midouble = new miDouble(nombre, double.Parse(valorDespuesDelIgual));
+
+        Console.WriteLine("Nombre de la variable: " + midouble.nombre);
+        Console.WriteLine("Valor: " + midouble.valor);
+    }
+    //Double
+    else if (Regex.IsMatch(valor, patronDoubleVal) || Regex.IsMatch(valor, patronDoubleVar))
+    {
+        int inicioNombre = valor.IndexOf(' ');
+        int finNombre = valor.IndexOf(':');
+        string nombre = valor.Substring(inicioNombre + 1, finNombre - 4);
+
+        midouble = new miDouble(nombre);
+
+        Console.WriteLine("Nombre de la variable: " + midouble.nombre);
+        Console.WriteLine("Valor: " + midouble.valor);
+    }
+    //Boolean
+    else if (Regex.IsMatch(valor, patronBooleanValConValor) || Regex.IsMatch(valor, patronBooleanVarConValor))
+    {
+        int inicioNombre = valor.IndexOf(' ');
+        int finNombre = valor.IndexOf(':');
+        string nombre = valor.Substring(inicioNombre + 1, finNombre - 4);
+
+        int indiceIgual = valor.IndexOf('='); // Encuentra la posición del signo '='
+        string valorDespuesDelIgual = valor.Substring(indiceIgual + 1); // Obtén la parte de la cadena después del signo '='
+
+        boolean = new miBoolean(nombre, bool.Parse(valorDespuesDelIgual));
+
+        Console.WriteLine("Nombre de la variable: " + boolean.nombre);
+        Console.WriteLine("Valor: " + boolean.valor);
+    }
+    //Boolean
+    else if (Regex.IsMatch(valor, patronBooleanVal) || Regex.IsMatch(valor, patronBooleanVar))
+    {
+        int inicioNombre = valor.IndexOf(' ');
+        int finNombre = valor.IndexOf(':');
+        string nombre = valor.Substring(inicioNombre + 1, finNombre - 4);
+
+        boolean = new miBoolean(nombre);
+
+        Console.WriteLine("Nombre de la variable: " + boolean.nombre);
+        Console.WriteLine("Valor: " + boolean.valor);
+    }
+    //Char
+    else if (Regex.IsMatch(valor, patronCharValConValor) || Regex.IsMatch(valor, patronCharVarConValor))
+    {
+        int inicioNombre = valor.IndexOf(' ');
+        int finNombre = valor.IndexOf(':');
+        string nombre = valor.Substring(inicioNombre + 1, finNombre - 4);
+
+        // Encuentra el índice del signo '='
+        int indiceIgual = valor.IndexOf('=');
+
+        // Encuentra el índice de las comillas simples que rodean el carácter
+        int inicioChar = valor.IndexOf('\'', indiceIgual);
+        int finChar = valor.IndexOf('\'', inicioChar + 1);
+
+        // Extrae el carácter entre las comillas simples
+        char charValor = valor.Substring(inicioChar + 1, finChar - inicioChar - 1)[0];
+
+        michar = new miChar(nombre, charValor);
+
+        Console.WriteLine("Nombre de la variable en miChar: " + michar.nombre);
+        Console.WriteLine("Valor: " + michar.valor);
+    }
+    //Char
+    else if (Regex.IsMatch(valor, patronCharVal) )
+    {
+        int inicioNombre = valor.IndexOf(' ');
+        int finNombre = valor.IndexOf(':');
+        string nombre = valor.Substring(inicioNombre + 1, finNombre - 4);
+
+        michar = new miChar(nombre);
+
+        Console.WriteLine("Nombre de la variable: " + michar.nombre);
+        Console.WriteLine("Valor: " + michar.valor);
+    }
+    //String
+    else if (Regex.IsMatch(valor, patronStringValConValor) || Regex.IsMatch(valor, patronStringVarConValor))
+    {
+        int inicioNombre = valor.IndexOf(' ');
+        int finNombre = valor.IndexOf(':');
+        string nombre = valor.Substring(inicioNombre + 1, finNombre - 4);
+
+        // Encuentra el índice del signo '='
+        int indiceIgual = valor.IndexOf('=');
+
+        // Obtén la parte de la cadena después del signo '='
+        string valorDespuesDelIgual = valor.Substring(indiceIgual + 1).Trim();
+
+        // Elimina las comillas dobles alrededor del valor
+        valorDespuesDelIgual = valorDespuesDelIgual.Trim('"', ' ');
+
+        // Crea una instancia de la clase Cadena
+        cadena = new Cadena(nombre, valorDespuesDelIgual);
+
+        // Imprime los resultados
+        Console.WriteLine("Nombre de la variable: " + cadena.nombre);
+        Console.WriteLine("Valor: " + cadena.valor);
+    }
+    //String
+    else if (Regex.IsMatch(valor, patronStringVal) || Regex.IsMatch(valor, patronStringVar))
+    {
+        int inicioNombre = valor.IndexOf(' ');
+        int finNombre = valor.IndexOf(':');
+        string nombre = valor.Substring(inicioNombre + 1, finNombre - 4);
+
+        cadena = new Cadena(nombre);
+
+        Console.WriteLine("Nombre de la variable: " + cadena.nombre);
+        Console.WriteLine("Valor: " + cadena.valor);
     }
     else
-        Console.WriteLine("Incorrecto");
+        Console.WriteLine("Syntaxis incorrecta");
+
+    Console.WriteLine();
 }
