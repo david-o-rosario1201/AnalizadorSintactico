@@ -85,45 +85,81 @@ while (true)
     Console.Write("Ingrese un string: ");
     string valor = Console.ReadLine();
 
+
+    ////////////////////////////////Esta primera condicion creo que se puede eliminar
+    if (Regex.IsMatch(valor, patronStringVal))
+    {
+        int inicioNombrevarriable = valor.IndexOf(' ') + 1;
+        int finNombrevarriable = valor.IndexOf(':');
+        string nombrevarriable = valor.Substring(inicioNombrevarriable, finNombrevarriable - inicioNombrevarriable).Trim();
+
+        if (variables.ContainsKey(nombrevarriable))
+        {
+            Console.WriteLine($"Ya exiate una variable con este nombre'{nombrevarriable}'\n");
+            continue;
+        }
+        else
+        {
+            variables[nombrevarriable] = true;
+        }
+    }
+
     //Entero
-    if (Regex.IsMatch(valor, patronEnteroValConValor) || Regex.IsMatch(valor, patronEnteroVarConValor))
+    else if (Regex.IsMatch(valor, patronEnteroValConValor) || Regex.IsMatch(valor, patronEnteroVarConValor))
     {
         int inicioNombre = valor.IndexOf(' ');
         int finNombre = valor.IndexOf(':');
-        string nombre = valor.Substring(inicioNombre + 1, finNombre - 4);
+        string nombre = valor.Substring(inicioNombre + 1, finNombre - inicioNombre - 1).Trim(); // Corrección aquí
 
         int indiceIgual = valor.IndexOf('='); // Encuentra la posición del signo '='
-        string valorDespuesDelIgual = valor.Substring(indiceIgual + 1); // Obtén la parte de la cadena después del signo '='
+        string valorDespuesDelIgual = valor.Substring(indiceIgual + 1).Trim(); // Obtén la parte de la cadena después del signo '='
 
-        entero = new Entero(nombre, int.Parse(valorDespuesDelIgual));
-        enteroList.Add(entero);
+        if (variables.ContainsKey(nombre))
+        {
+            Console.WriteLine($"Ya existe una variable con este nombre '{nombre}'\n");
+            continue;
+        }
+        else
+        {
+            entero = new Entero(nombre, int.Parse(valorDespuesDelIgual));
+            enteroList.Add(entero);
+            variables.Add(entero.nombre, true);
 
-        Console.WriteLine("Nombre de la variable: " + entero.nombre);
-        Console.WriteLine("Valor: " + entero.valor);
+            Console.WriteLine("Nombre de la variable: " + entero.nombre);
+            Console.WriteLine("Valor: " + entero.valor);
+        }
     }
     //Entero
     else if (Regex.IsMatch(valor, patronEnteroVal) || Regex.IsMatch(valor, patronEnteroVar))
     {
         int inicioNombre = valor.IndexOf(' ');
         int finNombre = valor.IndexOf(':');
-        string nombre = valor.Substring(inicioNombre + 1, finNombre - 4);
+        string nombre = valor.Substring(inicioNombre + 1, finNombre - inicioNombre - 1).Trim(); // Corrección aquí
 
-        entero = new Entero(nombre);
-        enteroList.Add(entero);
+        if (variables.ContainsKey(nombre))
+        {
+            Console.WriteLine($"Ya existe una variable con este nombre '{nombre}'\n");
+            continue;
+        }
+        else
+        {
+            entero = new Entero(nombre);
+            enteroList.Add(entero);
+            variables.Add(entero.nombre, true);
 
-        Console.WriteLine("Nombre de la variable: " + entero.nombre);
-        //Console.WriteLine("Valor: " + entero.valor);
+            Console.WriteLine("Nombre de la variable: " + entero.nombre);
+            //Console.WriteLine("Valor: " + entero.valor);
 
-        Console.WriteLine("Imprimiendo el nombre de este lado: " + nombre);
-        Console.WriteLine("Probando la lista: ");
+            Console.WriteLine("Imprimiendo el nombre de este lado: " + nombre);
+            Console.WriteLine("Probando la lista: ");
 
-        ///Aqui hay algo raro, no se porque con " " me da null reference...
-        var num1 = enteroList.FirstOrDefault(e => e.nombre.Equals("num1"));
-        //var num2 = enteroList.FirstOrDefault(e => e.nombre == "num2");
+            // Aquí hay algo raro, no sé por qué con " " me da null reference...
+            var num1 = enteroList.FirstOrDefault(e => e.nombre.Equals("num1"));
+            //var num2 = enteroList.FirstOrDefault(e => e.nombre == "num2");
 
-
-        Console.WriteLine("Variable1: " + num1?.nombre);
-        //Console.WriteLine("Variable2: " + num2.nombre);
+            Console.WriteLine("Variable1: " + num1?.nombre);
+            //Console.WriteLine("Variable2: " + num2.nombre);
+        }
     }
     //Short
     else if (Regex.IsMatch(valor, patronShortValConValor) ||  Regex.IsMatch(valor, patronShortVarConValor))
@@ -135,10 +171,19 @@ while (true)
         int indiceIgual = valor.IndexOf('='); // Encuentra la posición del signo '='
         string valorDespuesDelIgual = valor.Substring(indiceIgual + 1); // Obtén la parte de la cadena después del signo '='
 
-        mishort = new Short(nombre, short.Parse(valorDespuesDelIgual));
+        if (variables.ContainsKey(nombre))
+        {
+            Console.WriteLine($"Ya existe una variable con este nombre '{nombre}'\n");
+            continue;
+        }
+        else
+        {
+            mishort = new Short(nombre, short.Parse(valorDespuesDelIgual));
+            variables.Add(mishort.nombre, true);
 
-        Console.WriteLine("Nombre de la variable: " + mishort.nombre);
-        Console.WriteLine("Valor: " + mishort.valor);
+            Console.WriteLine("Nombre de la variable: " + mishort.nombre);
+            Console.WriteLine("Valor: " + mishort.valor);
+        }
     }
     //Short
     else if (Regex.IsMatch(valor, patronShortVal) || Regex.IsMatch(valor, patronShortVar))
@@ -147,10 +192,19 @@ while (true)
         int finNombre = valor.IndexOf(':');
         string nombre = valor.Substring(inicioNombre + 1, finNombre - 4);
 
-        mishort = new Short(nombre);
+        if (variables.ContainsKey(nombre))
+        {
+            Console.WriteLine($"Ya existe una variable con este nombre '{nombre}'\n");
+            continue;
+        }
+        else
+        {
+            mishort = new Short(nombre);
+            variables.Add(mishort.nombre, true);
 
-        Console.WriteLine("Nombre de la variable: " + mishort.nombre);
-        Console.WriteLine("Valor: " + mishort.valor);
+            Console.WriteLine("Nombre de la variable: " + mishort.nombre);
+            Console.WriteLine("Valor: " + mishort.valor);
+        }
     }
 
     else if (Regex.IsMatch(valor, patronLongValConValor) || Regex.IsMatch(valor, patronLongVarConValor))
@@ -162,10 +216,19 @@ while (true)
         int indiceIgual = valor.IndexOf('='); // Encuentra la posición del signo '='
         string valorDespuesDelIgual = valor.Substring(indiceIgual + 1); // Obtén la parte de la cadena después del signo '='
 
-        milong = new Long(nombre, long.Parse(valorDespuesDelIgual));
+        if (variables.ContainsKey(nombre))
+        {
+            Console.WriteLine($"Ya existe una variable con este nombre '{nombre}'\n");
+            continue;
+        }
+        else
+        {
+            milong = new Long(nombre, long.Parse(valorDespuesDelIgual));
+            variables.Add(milong.nombre, true);
 
-        Console.WriteLine("Nombre de la variable: " + milong.nombre);
-        Console.WriteLine("Valor: " + milong.valor);
+            Console.WriteLine("Nombre de la variable: " + milong.nombre);
+            Console.WriteLine("Valor: " + milong.valor);
+        }
     }
     //Long
     else if (Regex.IsMatch(valor, patronLongVal) || Regex.IsMatch(valor, patronLongVar))
@@ -174,10 +237,19 @@ while (true)
         int finNombre = valor.IndexOf(':');
         string nombre = valor.Substring(inicioNombre + 1, finNombre - 4);
 
-        milong = new Long(nombre);
+        if (variables.ContainsKey(nombre))
+        {
+            Console.WriteLine($"Ya existe una variable con este nombre '{nombre}'\n");
+            continue;
+        }
+        else
+        {
+            milong = new Long(nombre);
+            variables.Add(milong.nombre, true);
 
-        Console.WriteLine("Nombre de la variable: " + milong.nombre);
-        Console.WriteLine("Valor: " + milong.valor);
+            Console.WriteLine("Nombre de la variable: " + milong.nombre);
+            Console.WriteLine("Valor: " + milong.valor);
+        }
     }
     //Float
     else if (Regex.IsMatch(valor, patronFloatValConValor) || Regex.IsMatch(valor, patronFloatVarConValor))
@@ -189,10 +261,19 @@ while (true)
         int indiceIgual = valor.IndexOf('='); // Encuentra la posición del signo '='
         string valorDespuesDelIgual = valor.Substring(indiceIgual + 1); // Obtén la parte de la cadena después del signo '='
 
-        mifloat = new Float(nombre, float.Parse(valorDespuesDelIgual));
+        if (variables.ContainsKey(nombre))
+        {
+            Console.WriteLine($"Ya existe una variable con este nombre '{nombre}'\n");
+            continue;
+        }
+        else
+        {
+            mifloat = new Float(nombre, float.Parse(valorDespuesDelIgual));
+            variables.Add(mifloat.nombre, true);
 
-        Console.WriteLine("Nombre de la variable: " + mifloat.nombre);
-        Console.WriteLine("Valor: " + mifloat.valor);
+            Console.WriteLine("Nombre de la variable: " + mifloat.nombre);
+            Console.WriteLine("Valor: " + mifloat.valor);
+        }
     }
     //Float
     else if (Regex.IsMatch(valor, patronFloatVal) || Regex.IsMatch(valor, patronFloatVar))
@@ -201,10 +282,19 @@ while (true)
         int finNombre = valor.IndexOf(':');
         string nombre = valor.Substring(inicioNombre + 1, finNombre - 4);
 
-        mifloat = new Float(nombre);
+        if (variables.ContainsKey(nombre))
+        {
+            Console.WriteLine($"Ya existe una variable con este nombre '{nombre}'\n");
+            continue;
+        }
+        else
+        {
+            mifloat = new Float(nombre);
+            variables.Add(mifloat.nombre, true);
 
-        Console.WriteLine("Nombre de la variable: " + mifloat.nombre);
-        Console.WriteLine("Valor: " + mifloat.valor);
+            Console.WriteLine("Nombre de la variable: " + mifloat.nombre);
+            Console.WriteLine("Valor: " + mifloat.valor);
+        }
     }
     //Double
     else if (Regex.IsMatch(valor, patronDoubleValConValor) || Regex.IsMatch(valor, patronDoubleVarConValor))
@@ -216,10 +306,19 @@ while (true)
         int indiceIgual = valor.IndexOf('='); // Encuentra la posición del signo '='
         string valorDespuesDelIgual = valor.Substring(indiceIgual + 1); // Obtén la parte de la cadena después del signo '='
 
-        midouble = new miDouble(nombre, double.Parse(valorDespuesDelIgual));
+        if (variables.ContainsKey(nombre))
+        {
+            Console.WriteLine($"Ya existe una variable con este nombre '{nombre}'\n");
+            continue;
+        }
+        else
+        {
+            midouble = new miDouble(nombre, double.Parse(valorDespuesDelIgual));
+            variables.Add(midouble.nombre, true);
 
-        Console.WriteLine("Nombre de la variable: " + midouble.nombre);
-        Console.WriteLine("Valor: " + midouble.valor);
+            Console.WriteLine("Nombre de la variable: " + midouble.nombre);
+            Console.WriteLine("Valor: " + midouble.valor);
+        }
     }
     //Double
     else if (Regex.IsMatch(valor, patronDoubleVal) || Regex.IsMatch(valor, patronDoubleVar))
@@ -228,10 +327,19 @@ while (true)
         int finNombre = valor.IndexOf(':');
         string nombre = valor.Substring(inicioNombre + 1, finNombre - 4);
 
-        midouble = new miDouble(nombre);
+        if (variables.ContainsKey(nombre))
+        {
+            Console.WriteLine($"Ya existe una variable con este nombre '{nombre}'\n");
+            continue;
+        }
+        else
+        {
+            midouble = new miDouble(nombre);
+            variables.Add(midouble.nombre, true);
 
-        Console.WriteLine("Nombre de la variable: " + midouble.nombre);
-        Console.WriteLine("Valor: " + midouble.valor);
+            Console.WriteLine("Nombre de la variable: " + midouble.nombre);
+            Console.WriteLine("Valor: " + midouble.valor);
+        }
     }
     //Boolean
     else if (Regex.IsMatch(valor, patronBooleanValConValor) || Regex.IsMatch(valor, patronBooleanVarConValor))
@@ -243,10 +351,19 @@ while (true)
         int indiceIgual = valor.IndexOf('='); // Encuentra la posición del signo '='
         string valorDespuesDelIgual = valor.Substring(indiceIgual + 1); // Obtén la parte de la cadena después del signo '='
 
-        boolean = new miBoolean(nombre, bool.Parse(valorDespuesDelIgual));
+        if (variables.ContainsKey(nombre))
+        {
+            Console.WriteLine($"Ya existe una variable con este nombre '{nombre}'\n");
+            continue;
+        }
+        else
+        {
+            boolean = new miBoolean(nombre, bool.Parse(valorDespuesDelIgual));
+            variables.Add(boolean.nombre, true);
 
-        Console.WriteLine("Nombre de la variable: " + boolean.nombre);
-        Console.WriteLine("Valor: " + boolean.valor);
+            Console.WriteLine("Nombre de la variable: " + boolean.nombre);
+            Console.WriteLine("Valor: " + boolean.valor);
+        }
     }
     //Boolean
     else if (Regex.IsMatch(valor, patronBooleanVal) || Regex.IsMatch(valor, patronBooleanVar))
@@ -255,10 +372,19 @@ while (true)
         int finNombre = valor.IndexOf(':');
         string nombre = valor.Substring(inicioNombre + 1, finNombre - 4);
 
-        boolean = new miBoolean(nombre);
+        if (variables.ContainsKey(nombre))
+        {
+            Console.WriteLine($"Ya existe una variable con este nombre '{nombre}'\n");
+            continue;
+        }
+        else
+        {
+            boolean = new miBoolean(nombre);
+            variables.Add(boolean.nombre, true);
 
-        Console.WriteLine("Nombre de la variable: " + boolean.nombre);
-        Console.WriteLine("Valor: " + boolean.valor);
+            Console.WriteLine("Nombre de la variable: " + boolean.nombre);
+            Console.WriteLine("Valor: " + boolean.valor);
+        }
     }
     //Char
     else if (Regex.IsMatch(valor, patronCharValConValor) || Regex.IsMatch(valor, patronCharVarConValor))
@@ -277,10 +403,19 @@ while (true)
         // Extrae el carácter entre las comillas simples
         char charValor = valor.Substring(inicioChar + 1, finChar - inicioChar - 1)[0];
 
-        michar = new miChar(nombre, charValor);
+        if (variables.ContainsKey(nombre))
+        {
+            Console.WriteLine($"Ya existe una variable con este nombre '{nombre}'\n");
+            continue;
+        }
+        else
+        {
+            michar = new miChar(nombre, charValor);
+            variables.Add(michar.nombre, true);
 
-        Console.WriteLine("Nombre de la variable en miChar: " + michar.nombre);
-        Console.WriteLine("Valor: " + michar.valor);
+            Console.WriteLine("Nombre de la variable en miChar: " + michar.nombre);
+            Console.WriteLine("Valor: " + michar.valor);
+        }
     }
     //Char
     else if (Regex.IsMatch(valor, patronCharVal) )
@@ -289,10 +424,19 @@ while (true)
         int finNombre = valor.IndexOf(':');
         string nombre = valor.Substring(inicioNombre + 1, finNombre - 4);
 
-        michar = new miChar(nombre);
+        if (variables.ContainsKey(nombre))
+        {
+            Console.WriteLine($"Ya existe una variable con este nombre '{nombre}'\n");
+            continue;
+        }
+        else
+        {
+            michar = new miChar(nombre);
+            variables.Add(michar.nombre, true);
 
-        Console.WriteLine("Nombre de la variable: " + michar.nombre);
-        Console.WriteLine("Valor: " + michar.valor);
+            Console.WriteLine("Nombre de la variable: " + michar.nombre);
+            Console.WriteLine("Valor: " + michar.valor);
+        }
     }
     //String
     else if (Regex.IsMatch(valor, patronStringValConValor) || Regex.IsMatch(valor, patronStringVarConValor))
@@ -310,43 +454,45 @@ while (true)
         // Elimina las comillas dobles alrededor del valor
         valorDespuesDelIgual = valorDespuesDelIgual.Trim('"', ' ');
 
-        // Crea una instancia de la clase Cadena
-        cadena = new Cadena(nombre, valorDespuesDelIgual);
+        if (variables.ContainsKey(nombre))
+        {
+            Console.WriteLine($"Ya existe una variable con este nombre '{nombre}'\n");
+            continue;
+        }
+        else
+        {
+            // Crea una instancia de la clase Cadena
+            cadena = new Cadena(nombre, valorDespuesDelIgual);
+            variables.Add(cadena.nombre, true);
 
-        // Imprime los resultados
-        Console.WriteLine("Nombre de la variable: " + cadena.nombre);
-        Console.WriteLine("Valor: " + cadena.valor);
+            // Imprime los resultados
+            Console.WriteLine("Nombre de la variable: " + cadena.nombre);
+            Console.WriteLine("Valor: " + cadena.valor);
+        }
     }
-    //String
+    //String                        NO ESTA ENTRANDO AQUI!!!!!!!!
     else if (Regex.IsMatch(valor, patronStringVal) || Regex.IsMatch(valor, patronStringVar))
     {
         int inicioNombre = valor.IndexOf(' ');
         int finNombre = valor.IndexOf(':');
         string nombre = valor.Substring(inicioNombre + 1, finNombre - 4);
 
-        cadena = new Cadena(nombre);
+        if (variables.ContainsKey(nombre))
+        {
+            Console.WriteLine($"Ya existe una variable con este nombre '{nombre}'\n");
+            continue;
+        }
+        else
+        {
+            cadena = new Cadena(nombre);
+            variables.Add(cadena.nombre, true);
 
-        Console.WriteLine("Nombre de la variable: " + cadena.nombre);
-        Console.WriteLine("Valor: " + cadena.valor);
+            Console.WriteLine("Nombre de la variable: " + cadena.nombre);
+            Console.WriteLine("Valor: " + cadena.valor);
+        }
     }
     else
     {
-        if (Regex.IsMatch(valor, patronStringVal))
-        {
-            int inicioNombrevarriable = valor.IndexOf(' ') + 1;
-            int finNombrevarriable = valor.IndexOf(':');
-            string nombrevarriable = valor.Substring(inicioNombrevarriable, finNombrevarriable - inicioNombrevarriable).Trim();
-
-            if (variables.ContainsKey(nombrevarriable))
-            {
-                Console.WriteLine($"Ya exiate una variable con este nombre'{nombrevarriable}'");
-                continue;
-            }
-            else
-            {
-                variables[nombrevarriable] = true;
-            }
-        }
         // Validación adicional
         bool nombreValido = true;
         string mensajeError = "Entrada no válida: ";
