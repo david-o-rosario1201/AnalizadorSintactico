@@ -87,25 +87,25 @@ while (true)
 
 
     ////////////////////////////////Esta primera condicion creo que se puede eliminar
-    if (Regex.IsMatch(valor, patronStringVal))
-    {
-        int inicioNombrevarriable = valor.IndexOf(' ') + 1;
-        int finNombrevarriable = valor.IndexOf(':');
-        string nombrevarriable = valor.Substring(inicioNombrevarriable, finNombrevarriable - inicioNombrevarriable).Trim();
+    //if (Regex.IsMatch(valor, patronStringVal))
+    //{
+    //    int inicioNombrevarriable = valor.IndexOf(' ') + 1;
+    //    int finNombrevarriable = valor.IndexOf(':');
+    //    string nombrevarriable = valor.Substring(inicioNombrevarriable, finNombrevarriable - inicioNombrevarriable).Trim();
 
-        if (variables.ContainsKey(nombrevarriable))
-        {
-            Console.WriteLine($"Ya exiate una variable con este nombre'{nombrevarriable}'\n");
-            continue;
-        }
-        else
-        {
-            variables[nombrevarriable] = true;
-        }
-    }
+    //    if (variables.ContainsKey(nombrevarriable))
+    //    {
+    //        Console.WriteLine($"Ya exiate una variable con este nombre'{nombrevarriable}'\n");
+    //        continue;
+    //    }
+    //    else
+    //    {
+    //        variables[nombrevarriable] = true;
+    //    }
+    //}
 
     //Entero
-    else if (Regex.IsMatch(valor, patronEnteroValConValor) || Regex.IsMatch(valor, patronEnteroVarConValor))
+    if (Regex.IsMatch(valor, patronEnteroValConValor) || Regex.IsMatch(valor, patronEnteroVarConValor))
     {
         int inicioNombre = valor.IndexOf(' ');
         int finNombre = valor.IndexOf(':');
