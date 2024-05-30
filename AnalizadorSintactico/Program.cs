@@ -67,6 +67,15 @@ string patronStringVarConValor = @"^var _?[A-Za-z0-9]*: String = ""[^""]*""$";
 string patronStringVar = @"^var _?[A-Za-z0-9]*: String$";
 
 
+///Patrones para imprimir
+string patronPrint = @"^print\(""[^""]*""\)$";
+string patronPrintConVariable = @"^print\([A-Za-z0-9]+\)$";
+
+
+string patronPrintln = @"^println\(""[^""]*""\)$";
+string patronPrintlnConVariable = @"^println\([A-Za-z0-9]+\)$";
+
+
 //Clases
 Entero entero;
 Short mishort;
@@ -79,8 +88,17 @@ Cadena cadena;
 
 //Lista
 List<Entero> enteroList = new List<Entero>();
+List<Short> shortList = new List<Short>();
+List<Long> longList = new List<Long>();
+List<Float> floatList = new List<Float>();
+List<miDouble> doubleList = new List<miDouble>();
+List<miBoolean> booleanList = new List<miBoolean>();
+List<miChar> charList = new List<miChar>();
+List<Cadena> cadenaList = new List<Cadena>();
 
+//Dicioanrio de variables
 Dictionary<string, bool> variables = new Dictionary<string, bool>();
+
 while (true)
 {
     Console.Write("Ingrese un string: ");
@@ -104,6 +122,120 @@ while (true)
     //        variables[nombrevarriable] = true;
     //    }
     //}
+    if(valor.StartsWith("p"))
+    {
+        if (Regex.IsMatch(valor, patronPrint))
+        {
+            int indiceComillasInicio = valor.IndexOf('"');
+            int indiceComillasFin = valor.LastIndexOf('"');
+
+            string valorEntreComillas = valor.Substring(indiceComillasInicio + 1, indiceComillasFin - indiceComillasInicio - 1);
+            Console.Write(valorEntreComillas);
+        }
+
+        else if(Regex.IsMatch(valor, patronPrintConVariable))
+        {
+            int indiceParentesisInicio = valor.IndexOf('(');
+            int indiceParentesisFin = valor.IndexOf(')');
+
+            string valorEntreParentesis = valor.Substring(indiceParentesisInicio + 1, indiceParentesisFin - indiceParentesisInicio - 1);
+
+            var result = variables.FirstOrDefault(v => v.Key == valorEntreParentesis);
+
+            if (result.Key != null)
+            {
+                var enteroResult = enteroList.FirstOrDefault(v => v.nombre == result.Key);
+                var shortResult = shortList.FirstOrDefault(v => v.nombre == result.Key);
+                var longResult = longList.FirstOrDefault(v => v.nombre == result.Key);
+                var floatResult = floatList.FirstOrDefault(v => v.nombre == result.Key);
+                var doubleResult = doubleList.FirstOrDefault(v => v.nombre == result.Key);
+                var booleanResult = booleanList.FirstOrDefault(v => v.nombre == result.Key);
+                var charResult = charList.FirstOrDefault(v => v.nombre == result.Key);
+                var cadenaResult = cadenaList.FirstOrDefault(v => v.nombre == result.Key);
+
+                if (enteroResult is not null)
+                    Console.Write(enteroResult.valor);
+                
+                else if (shortResult is not null)
+                    Console.Write(shortResult.valor);
+
+                else if (longResult is not null)
+                    Console.Write(longResult.valor);
+
+                else if (floatResult is not null)
+                    Console.Write(floatResult.valor);
+
+                else if (doubleResult is not null)
+                    Console.Write(doubleResult.valor);
+
+                else if (booleanResult is not null)
+                    Console.Write(booleanResult.valor);
+
+                else if (charResult is not null)
+                    Console.Write(charResult.valor);
+
+                else if (cadenaResult is not null)
+                    Console.Write(cadenaResult.valor);
+            }
+        }
+
+        if(Regex.IsMatch(valor, patronPrintln))
+        {
+            int indiceComillasInicio = valor.IndexOf('"');
+            int indiceComillasFin = valor.LastIndexOf('"');
+
+            string valorEntreComillas = valor.Substring(indiceComillasInicio + 1, indiceComillasFin - indiceComillasInicio - 1);
+            Console.WriteLine(valorEntreComillas);
+        }
+
+        else if (Regex.IsMatch(valor, patronPrintlnConVariable))
+        {
+            int indiceParentesisInicio = valor.IndexOf('(');
+            int indiceParentesisFin = valor.IndexOf(')');
+
+            string valorEntreParentesis = valor.Substring(indiceParentesisInicio + 1, indiceParentesisFin - indiceParentesisInicio - 1);
+
+            var result = variables.FirstOrDefault(v => v.Key == valorEntreParentesis);
+
+            if (result.Key != null)
+            {
+                var enteroResult = enteroList.FirstOrDefault(v => v.nombre == result.Key);
+                var shortResult = shortList.FirstOrDefault(v => v.nombre == result.Key);
+                var longResult = longList.FirstOrDefault(v => v.nombre == result.Key);
+                var floatResult = floatList.FirstOrDefault(v => v.nombre == result.Key);
+                var doubleResult = doubleList.FirstOrDefault(v => v.nombre == result.Key);
+                var booleanResult = booleanList.FirstOrDefault(v => v.nombre == result.Key);
+                var charResult = charList.FirstOrDefault(v => v.nombre == result.Key);
+                var cadenaResult = cadenaList.FirstOrDefault(v => v.nombre == result.Key);
+
+                if (enteroResult is not null)
+                    Console.WriteLine(enteroResult.valor);
+
+                else if (shortResult is not null)
+                    Console.WriteLine(shortResult.valor);
+
+                else if (longResult is not null)
+                    Console.WriteLine(longResult.valor);
+
+                else if (floatResult is not null)
+                    Console.WriteLine(floatResult.valor);
+
+                else if (doubleResult is not null)
+                    Console.WriteLine(doubleResult.valor);
+
+                else if (booleanResult is not null)
+                    Console.WriteLine(booleanResult.valor);
+
+                else if (charResult is not null)
+                    Console.WriteLine(charResult.valor);
+
+                else if (cadenaResult is not null)
+                    Console.WriteLine(cadenaResult.valor);
+            }
+        }
+
+        continue;
+    }
 
     //Entero
     if (Regex.IsMatch(valor, patronEnteroValConValor) || Regex.IsMatch(valor, patronEnteroVarConValor))
@@ -126,8 +258,8 @@ while (true)
             enteroList.Add(entero);
             variables.Add(entero.nombre, true);
 
-            Console.WriteLine("Nombre de la variable: " + entero.nombre);
-            Console.WriteLine("Valor: " + entero.valor);
+            //Console.WriteLine("Nombre de la variable: " + entero.nombre);
+            //Console.WriteLine("Valor: " + entero.valor);
         }
     }
     //Entero
@@ -148,18 +280,18 @@ while (true)
             enteroList.Add(entero);
             variables.Add(entero.nombre, true);
 
-            Console.WriteLine("Nombre de la variable: " + entero.nombre);
-            //Console.WriteLine("Valor: " + entero.valor);
+            //Console.WriteLine("Nombre de la variable: " + entero.nombre);
+            ////Console.WriteLine("Valor: " + entero.valor);
 
-            Console.WriteLine("Imprimiendo el nombre de este lado: " + nombre);
-            Console.WriteLine("Probando la lista: ");
+            //Console.WriteLine("Imprimiendo el nombre de este lado: " + nombre);
+            //Console.WriteLine("Probando la lista: ");
 
-            // Aquí hay algo raro, no sé por qué con " " me da null reference...
-            var num1 = enteroList.FirstOrDefault(e => e.nombre.Equals("num1"));
-            //var num2 = enteroList.FirstOrDefault(e => e.nombre == "num2");
+            //// Aquí hay algo raro, no sé por qué con " " me da null reference...
+            //var num1 = enteroList.FirstOrDefault(e => e.nombre.Equals("num1"));
+            ////var num2 = enteroList.FirstOrDefault(e => e.nombre == "num2");
 
-            Console.WriteLine("Variable1: " + num1?.nombre);
-            //Console.WriteLine("Variable2: " + num2.nombre);
+            //Console.WriteLine("Variable1: " + num1?.nombre);
+            ////Console.WriteLine("Variable2: " + num2.nombre);
         }
     }
     //Short
@@ -180,10 +312,11 @@ while (true)
         else
         {
             mishort = new Short(nombre, short.Parse(valorDespuesDelIgual));
+            shortList.Add(mishort);
             variables.Add(mishort.nombre, true);
 
-            Console.WriteLine("Nombre de la variable: " + mishort.nombre);
-            Console.WriteLine("Valor: " + mishort.valor);
+            //Console.WriteLine("Nombre de la variable: " + mishort.nombre);
+            //Console.WriteLine("Valor: " + mishort.valor);
         }
     }
     //Short
@@ -201,10 +334,11 @@ while (true)
         else
         {
             mishort = new Short(nombre);
+            shortList.Add(mishort);
             variables.Add(mishort.nombre, true);
 
-            Console.WriteLine("Nombre de la variable: " + mishort.nombre);
-            Console.WriteLine("Valor: " + mishort.valor);
+            //Console.WriteLine("Nombre de la variable: " + mishort.nombre);
+            //Console.WriteLine("Valor: " + mishort.valor);
         }
     }
 
@@ -225,10 +359,11 @@ while (true)
         else
         {
             milong = new Long(nombre, long.Parse(valorDespuesDelIgual));
+            longList.Add(milong);
             variables.Add(milong.nombre, true);
 
-            Console.WriteLine("Nombre de la variable: " + milong.nombre);
-            Console.WriteLine("Valor: " + milong.valor);
+            //Console.WriteLine("Nombre de la variable: " + milong.nombre);
+            //Console.WriteLine("Valor: " + milong.valor);
         }
     }
     //Long
@@ -246,10 +381,11 @@ while (true)
         else
         {
             milong = new Long(nombre);
+            longList.Add(milong);
             variables.Add(milong.nombre, true);
 
-            Console.WriteLine("Nombre de la variable: " + milong.nombre);
-            Console.WriteLine("Valor: " + milong.valor);
+            //Console.WriteLine("Nombre de la variable: " + milong.nombre);
+            //Console.WriteLine("Valor: " + milong.valor);
         }
     }
     //Float
@@ -270,10 +406,11 @@ while (true)
         else
         {
             mifloat = new Float(nombre, float.Parse(valorDespuesDelIgual));
+            floatList.Add(mifloat);
             variables.Add(mifloat.nombre, true);
 
-            Console.WriteLine("Nombre de la variable: " + mifloat.nombre);
-            Console.WriteLine("Valor: " + mifloat.valor);
+            //Console.WriteLine("Nombre de la variable: " + mifloat.nombre);
+            //Console.WriteLine("Valor: " + mifloat.valor);
         }
     }
     //Float
@@ -291,10 +428,11 @@ while (true)
         else
         {
             mifloat = new Float(nombre);
+            floatList.Add(mifloat);
             variables.Add(mifloat.nombre, true);
 
-            Console.WriteLine("Nombre de la variable: " + mifloat.nombre);
-            Console.WriteLine("Valor: " + mifloat.valor);
+            //Console.WriteLine("Nombre de la variable: " + mifloat.nombre);
+            //Console.WriteLine("Valor: " + mifloat.valor);
         }
     }
     //Double
@@ -315,10 +453,11 @@ while (true)
         else
         {
             midouble = new miDouble(nombre, double.Parse(valorDespuesDelIgual));
+            doubleList.Add(midouble);
             variables.Add(midouble.nombre, true);
 
-            Console.WriteLine("Nombre de la variable: " + midouble.nombre);
-            Console.WriteLine("Valor: " + midouble.valor);
+            //Console.WriteLine("Nombre de la variable: " + midouble.nombre);
+            //Console.WriteLine("Valor: " + midouble.valor);
         }
     }
     //Double
@@ -336,10 +475,11 @@ while (true)
         else
         {
             midouble = new miDouble(nombre);
+            doubleList.Add(midouble);
             variables.Add(midouble.nombre, true);
 
-            Console.WriteLine("Nombre de la variable: " + midouble.nombre);
-            Console.WriteLine("Valor: " + midouble.valor);
+            //Console.WriteLine("Nombre de la variable: " + midouble.nombre);
+            //Console.WriteLine("Valor: " + midouble.valor);
         }
     }
     //Boolean
@@ -360,10 +500,11 @@ while (true)
         else
         {
             boolean = new miBoolean(nombre, bool.Parse(valorDespuesDelIgual));
+            booleanList.Add(boolean);
             variables.Add(boolean.nombre, true);
 
-            Console.WriteLine("Nombre de la variable: " + boolean.nombre);
-            Console.WriteLine("Valor: " + boolean.valor);
+            //Console.WriteLine("Nombre de la variable: " + boolean.nombre);
+            //Console.WriteLine("Valor: " + boolean.valor);
         }
     }
     //Boolean
@@ -381,10 +522,11 @@ while (true)
         else
         {
             boolean = new miBoolean(nombre);
+            booleanList.Add(boolean);
             variables.Add(boolean.nombre, true);
 
-            Console.WriteLine("Nombre de la variable: " + boolean.nombre);
-            Console.WriteLine("Valor: " + boolean.valor);
+            //Console.WriteLine("Nombre de la variable: " + boolean.nombre);
+            //Console.WriteLine("Valor: " + boolean.valor);
         }
     }
     //Char
@@ -412,10 +554,11 @@ while (true)
         else
         {
             michar = new miChar(nombre, charValor);
+            charList.Add(michar);
             variables.Add(michar.nombre, true);
 
-            Console.WriteLine("Nombre de la variable en miChar: " + michar.nombre);
-            Console.WriteLine("Valor: " + michar.valor);
+            //Console.WriteLine("Nombre de la variable en miChar: " + michar.nombre);
+            //Console.WriteLine("Valor: " + michar.valor);
         }
     }
     //Char
@@ -433,10 +576,11 @@ while (true)
         else
         {
             michar = new miChar(nombre);
+            charList.Add(michar);
             variables.Add(michar.nombre, true);
 
-            Console.WriteLine("Nombre de la variable: " + michar.nombre);
-            Console.WriteLine("Valor: " + michar.valor);
+            //Console.WriteLine("Nombre de la variable: " + michar.nombre);
+            //Console.WriteLine("Valor: " + michar.valor);
         }
     }
     //String
@@ -464,11 +608,12 @@ while (true)
         {
             // Crea una instancia de la clase Cadena
             cadena = new Cadena(nombre, valorDespuesDelIgual);
+            cadenaList.Add(cadena);
             variables.Add(cadena.nombre, true);
 
             // Imprime los resultados
-            Console.WriteLine("Nombre de la variable: " + cadena.nombre);
-            Console.WriteLine("Valor: " + cadena.valor);
+            //Console.WriteLine("Nombre de la variable: " + cadena.nombre);
+            //Console.WriteLine("Valor: " + cadena.valor);
         }
     }
     //String
@@ -486,15 +631,17 @@ while (true)
         else
         {
             cadena = new Cadena(nombre);
+            cadenaList.Add(cadena);
             variables.Add(cadena.nombre, true);
 
-            Console.WriteLine("Nombre de la variable: " + cadena.nombre);
-            Console.WriteLine("Valor: " + cadena.valor);
+            //Console.WriteLine("Nombre de la variable: " + cadena.nombre);
+            //Console.WriteLine("Valor: " + cadena.valor);
         }
     }
     //Mensajes de error
     else
     {
+        Console.WriteLine("\n\n-------------------------------------------------------------------------------------------------");
         if(String.IsNullOrEmpty(valor))
         {
             Console.WriteLine("Ingrese una instrucción");
@@ -509,116 +656,105 @@ while (true)
             ///
 
 
-            //if (valor.StartsWith("v"))
-            //{
-            //    if (valor == "val" || valor == "var")
-            //        Console.WriteLine("Se espera el nombre del identificador");
-            //    else
-            //    {
-            //        var cortarCadena = valor.IndexOf(' ');
-            //        string resultado = valor.Substring(0, cortarCadena);
-            //    }
-
-            //    //else
-            //    //    Console.WriteLine($"No se reconoce '{valor}'");
-
-            //}
-
-            //else if(valor.StartsWith("p"))
-            //{
-
-            //}
-
-            //else
-            //    Console.WriteLine($"No se reconoce '{valor}'");
-
-
-
-
-
-
-
-
-            // Validación adicional
-            bool nombreValido = true;
-            string mensajeError = "Entrada no válida: ";
-
-            // Verificar si es "var" o "val"
-            if (!(valor.StartsWith("var") || valor.StartsWith("val")))
+            if (valor.StartsWith("v"))
             {
-                nombreValido = false;
-                mensajeError += "debe comenzar con 'var' o 'val'. ";
-            }
+                // Validación adicional
+                bool nombreValido = true;
+                string mensajeError = "Entrada no válida: ";
 
-            // Verificar si el nombre contiene espacio o empieza con un número
-            int inicioNombre = valor.IndexOf(' ') + 1;
-            int finNombre = valor.IndexOf(':');
-            if (finNombre > inicioNombre)
-            {
-                string nombre = valor.Substring(inicioNombre, finNombre - inicioNombre).Trim();
-                if (nombre.Contains(' ') || char.IsDigit(nombre[0]))
+                // Verificar si es "var" o "val"
+                if (!(valor.StartsWith("var") || valor.StartsWith("val")))
                 {
                     nombreValido = false;
-                    mensajeError += "el nombre no debe contener espacios ni empezar con un número. ";
+                    mensajeError += "debe comenzar con 'var' o 'val'. ";
                 }
-            }
 
-            // Verificar si tiene dos puntos
-            if (!valor.Contains(":"))
-            {
-                nombreValido = false;
-                mensajeError += "debe contener ':'. ";
-            }
-
-            // Verificar si tiene un tipo de dato
-            bool tipoValido = false;
-            foreach (var tipo in new[] { "Int", "Short", "Long", "Float", "Double", "Boolean", "Char", "String" })
-            {
-                if (valor.Contains($": {tipo}"))
+                // Verificar si el nombre contiene espacio o empieza con un número
+                int inicioNombre = valor.IndexOf(' ') + 1;
+                int finNombre = valor.IndexOf(':');
+                if (finNombre > inicioNombre)
                 {
-                    tipoValido = true;
-                    break;
+                    string nombre = valor.Substring(inicioNombre, finNombre - inicioNombre).Trim();
+                    if (nombre.Contains(' ') || char.IsDigit(nombre[0]))
+                    {
+                        nombreValido = false;
+                        mensajeError += "el nombre no debe contener espacios ni empezar con un número. ";
+                    }
                 }
-            }
-            if (!tipoValido)
-            {
-                nombreValido = false;
-                mensajeError += "debe contener un tipo de dato válido. ";
-            }
-            //Verificar si el nombre contiene espacios o empieza con numeros
-            //int inicioNombre2 = valor.IndexOf(' ') + 1;
-            //int finNombre2 = valor.IndexOf(':');
-            //if (finNombre2 > inicioNombre2)
-            //{
-            //    string nombre2 = valor.Substring(inicioNombre2, finNombre2 - inicioNombre2).Trim();
-            //    if (!nombre2.Contains(' ') || char.IsDigit(nombre2[0]))
-            //    {
-            //        nombreValido = false;
-            //        mensajeError += "el nombre no debe contener espacios ni empezar con un número. ";
-            //    }
-            //}
 
-            // Verificar si tiene el signo igual
-            if (valor.Contains("="))
-            {
-                int indiceIgual = valor.IndexOf('='); // Encuentra la posición del signo '='
-                string valorDespuesDelIgual = valor.Substring(indiceIgual + 1); // Obtén la parte de la cadena después del signo '='
-
-                if(String.IsNullOrEmpty(valorDespuesDelIgual))
+                // Verificar si tiene dos puntos
+                if (!valor.Contains(":"))
                 {
                     nombreValido = false;
-                    mensajeError += "debe contener el valor despues del '='. ";
+                    mensajeError += "debe contener ':'. ";
+                }
+
+                // Verificar si tiene un tipo de dato
+                bool tipoValido = false;
+                foreach (var tipo in new[] { "Int", "Short", "Long", "Float", "Double", "Boolean", "Char", "String" })
+                {
+                    if (valor.Contains($": {tipo}"))
+                    {
+                        tipoValido = true;
+                        break;
+                    }
+                }
+                if (!tipoValido)
+                {
+                    nombreValido = false;
+                    mensajeError += "debe contener un tipo de dato válido. ";
+                }
+                //Verificar si el nombre contiene espacios o empieza con numeros
+                //int inicioNombre2 = valor.IndexOf(' ') + 1;
+                //int finNombre2 = valor.IndexOf(':');
+                //if (finNombre2 > inicioNombre2)
+                //{
+                //    string nombre2 = valor.Substring(inicioNombre2, finNombre2 - inicioNombre2).Trim();
+                //    if (!nombre2.Contains(' ') || char.IsDigit(nombre2[0]))
+                //    {
+                //        nombreValido = false;
+                //        mensajeError += "el nombre no debe contener espacios ni empezar con un número. ";
+                //    }
+                //}
+
+                // Verificar si tiene el signo igual
+                if (valor.Contains("="))
+                {
+                    int indiceIgual = valor.IndexOf('='); // Encuentra la posición del signo '='
+                    string valorDespuesDelIgual = valor.Substring(indiceIgual + 1); // Obtén la parte de la cadena después del signo '='
+
+                    if (String.IsNullOrEmpty(valorDespuesDelIgual))
+                    {
+                        nombreValido = false;
+                        mensajeError += "debe contener el valor despues del '='. ";
+                    }
+                }
+
+                if (!nombreValido)
+                {
+                    Console.WriteLine(mensajeError);
+                }
+                else
+                {
+                    Console.WriteLine("Entrada no válida.");
                 }
             }
 
-            if (!nombreValido)
+            else if (valor.StartsWith("p"))
             {
-                Console.WriteLine(mensajeError);
+                //if (Regex.IsMatch(valor, patronPrint))
+                //{
+                //    Console.WriteLine("Se puede imprimir");
+                //}
+                //else
+                //{
+                //    Console.WriteLine("No se puede imprimir");
+                //}
             }
+
             else
-            {
-                Console.WriteLine("Entrada no válida.");
-            }
+                Console.WriteLine($"No se reconoce '{valor}'");
+
         }
     }
 
