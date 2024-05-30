@@ -1,5 +1,6 @@
 ﻿using AnalizadorSintactico;
 using System;
+using System.ComponentModel.DataAnnotations;
 using System.Text.RegularExpressions;
 
 
@@ -470,7 +471,7 @@ while (true)
             Console.WriteLine("Valor: " + cadena.valor);
         }
     }
-    //String                        NO ESTA ENTRANDO AQUI!!!!!!!!
+    //String
     else if (Regex.IsMatch(valor, patronStringVal) || Regex.IsMatch(valor, patronStringVar))
     {
         int inicioNombre = valor.IndexOf(' ');
@@ -491,86 +492,134 @@ while (true)
             Console.WriteLine("Valor: " + cadena.valor);
         }
     }
+    //Mensajes de error
     else
     {
-        // Validación adicional
-        bool nombreValido = true;
-        string mensajeError = "Entrada no válida: ";
-
-        // Verificar si es "var" o "val"
-        if (!(valor.StartsWith("var ") || valor.StartsWith("val ")))
+        if(String.IsNullOrEmpty(valor))
         {
-            nombreValido = false;
-            mensajeError += "debe comenzar con 'var' o 'val'. ";
-        }
-
-        // Verificar si el nombre contiene espacio o empieza con un número
-        int inicioNombre = valor.IndexOf(' ') + 1;
-        int finNombre = valor.IndexOf(':');
-        if (finNombre > inicioNombre)
-        {
-            string nombre = valor.Substring(inicioNombre, finNombre - inicioNombre).Trim();
-            if (nombre.Contains(' ') || char.IsDigit(nombre[0]))
-            {
-                nombreValido = false;
-                mensajeError += "el nombre no debe contener espacios ni empezar con un número. ";
-            }
-        }
-
-        // Verificar si tiene dos puntos
-        if (!valor.Contains(":"))
-        {
-            nombreValido = false;
-            mensajeError += "debe contener ':'. ";
-        }
-
-        // Verificar si tiene un tipo de dato
-        bool tipoValido = false;
-        foreach (var tipo in new[] { "Int", "Short", "Long", "Float", "Double", "Boolean", "Char", "String" })
-        {
-            if (valor.Contains($": {tipo}"))
-            {
-                tipoValido = true;
-                break;
-            }
-        }
-        if (!tipoValido)
-        {
-            nombreValido = false;
-            mensajeError += "debe contener un tipo de dato válido. ";
-        }
-        //Verificar si el nombre contiene espacios o empieza con numeros
-        int inicioNombre2 = valor.IndexOf(' ') + 1;
-        int finNombre2 = valor.IndexOf(':');
-        if (finNombre2 > inicioNombre2)
-        {
-            string nombre2 = valor.Substring(inicioNombre2, finNombre2 - inicioNombre2).Trim();
-            if (!nombre2.Contains(' ') || char.IsDigit(nombre2[0]))
-            {
-                nombreValido = false;
-                mensajeError += "el nombre no debe contener espacios ni empezar con un número. ";
-            }
-        }
-
-        // Verificar si tiene el signo igual
-        if (!valor.Contains("="))
-        {
-            nombreValido = false;
-            mensajeError += "debe contener '='. ";
-        }
-
-        if (!nombreValido)
-        {
-            Console.WriteLine(mensajeError);
+            Console.WriteLine("Ingrese una instrucción");
         }
         else
         {
-            Console.WriteLine("Entrada no válida.");
+            Console.WriteLine("Syntaxis incorrecta");
+
+            ///// var o val
+            //// que contenga :
+            //// que contenga el tipo de dato
+            ///
+
+
+            //if (valor.StartsWith("v"))
+            //{
+            //    if (valor == "val" || valor == "var")
+            //        Console.WriteLine("Se espera el nombre del identificador");
+            //    else
+            //    {
+            //        var cortarCadena = valor.IndexOf(' ');
+            //        string resultado = valor.Substring(0, cortarCadena);
+            //    }
+
+            //    //else
+            //    //    Console.WriteLine($"No se reconoce '{valor}'");
+
+            //}
+
+            //else if(valor.StartsWith("p"))
+            //{
+
+            //}
+
+            //else
+            //    Console.WriteLine($"No se reconoce '{valor}'");
+
+
+
+
+
+
+
+
+            // Validación adicional
+            bool nombreValido = true;
+            string mensajeError = "Entrada no válida: ";
+
+            // Verificar si es "var" o "val"
+            if (!(valor.StartsWith("var") || valor.StartsWith("val")))
+            {
+                nombreValido = false;
+                mensajeError += "debe comenzar con 'var' o 'val'. ";
+            }
+
+            // Verificar si el nombre contiene espacio o empieza con un número
+            int inicioNombre = valor.IndexOf(' ') + 1;
+            int finNombre = valor.IndexOf(':');
+            if (finNombre > inicioNombre)
+            {
+                string nombre = valor.Substring(inicioNombre, finNombre - inicioNombre).Trim();
+                if (nombre.Contains(' ') || char.IsDigit(nombre[0]))
+                {
+                    nombreValido = false;
+                    mensajeError += "el nombre no debe contener espacios ni empezar con un número. ";
+                }
+            }
+
+            // Verificar si tiene dos puntos
+            if (!valor.Contains(":"))
+            {
+                nombreValido = false;
+                mensajeError += "debe contener ':'. ";
+            }
+
+            // Verificar si tiene un tipo de dato
+            bool tipoValido = false;
+            foreach (var tipo in new[] { "Int", "Short", "Long", "Float", "Double", "Boolean", "Char", "String" })
+            {
+                if (valor.Contains($": {tipo}"))
+                {
+                    tipoValido = true;
+                    break;
+                }
+            }
+            if (!tipoValido)
+            {
+                nombreValido = false;
+                mensajeError += "debe contener un tipo de dato válido. ";
+            }
+            //Verificar si el nombre contiene espacios o empieza con numeros
+            //int inicioNombre2 = valor.IndexOf(' ') + 1;
+            //int finNombre2 = valor.IndexOf(':');
+            //if (finNombre2 > inicioNombre2)
+            //{
+            //    string nombre2 = valor.Substring(inicioNombre2, finNombre2 - inicioNombre2).Trim();
+            //    if (!nombre2.Contains(' ') || char.IsDigit(nombre2[0]))
+            //    {
+            //        nombreValido = false;
+            //        mensajeError += "el nombre no debe contener espacios ni empezar con un número. ";
+            //    }
+            //}
+
+            // Verificar si tiene el signo igual
+            if (valor.Contains("="))
+            {
+                int indiceIgual = valor.IndexOf('='); // Encuentra la posición del signo '='
+                string valorDespuesDelIgual = valor.Substring(indiceIgual + 1); // Obtén la parte de la cadena después del signo '='
+
+                if(String.IsNullOrEmpty(valorDespuesDelIgual))
+                {
+                    nombreValido = false;
+                    mensajeError += "debe contener el valor despues del '='. ";
+                }
+            }
+
+            if (!nombreValido)
+            {
+                Console.WriteLine(mensajeError);
+            }
+            else
+            {
+                Console.WriteLine("Entrada no válida.");
+            }
         }
-
-
-        Console.WriteLine("Syntaxis incorrecta");
-
     }
 
 
