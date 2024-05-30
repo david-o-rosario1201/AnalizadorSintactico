@@ -1,6 +1,7 @@
 ﻿using AnalizadorSintactico;
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.Reflection;
 using System.Text.RegularExpressions;
 
 
@@ -99,6 +100,9 @@ List<Cadena> cadenaList = new List<Cadena>();
 //Dicioanrio de variables
 Dictionary<string, bool> variables = new Dictionary<string, bool>();
 
+//Error de variable no creada
+string variableNoEncontrada = "";
+
 while (true)
 {
     Console.Write("Ingrese un string: ");
@@ -122,119 +126,126 @@ while (true)
     //        variables[nombrevarriable] = true;
     //    }
     //}
-    if(valor.StartsWith("p"))
+
+    if (Regex.IsMatch(valor, patronPrint))
     {
-        if (Regex.IsMatch(valor, patronPrint))
-        {
-            int indiceComillasInicio = valor.IndexOf('"');
-            int indiceComillasFin = valor.LastIndexOf('"');
+        int indiceComillasInicio = valor.IndexOf('"');
+        int indiceComillasFin = valor.LastIndexOf('"');
 
-            string valorEntreComillas = valor.Substring(indiceComillasInicio + 1, indiceComillasFin - indiceComillasInicio - 1);
-            Console.Write(valorEntreComillas);
-        }
-
-        else if(Regex.IsMatch(valor, patronPrintConVariable))
-        {
-            int indiceParentesisInicio = valor.IndexOf('(');
-            int indiceParentesisFin = valor.IndexOf(')');
-
-            string valorEntreParentesis = valor.Substring(indiceParentesisInicio + 1, indiceParentesisFin - indiceParentesisInicio - 1);
-
-            var result = variables.FirstOrDefault(v => v.Key == valorEntreParentesis);
-
-            if (result.Key != null)
-            {
-                var enteroResult = enteroList.FirstOrDefault(v => v.nombre == result.Key);
-                var shortResult = shortList.FirstOrDefault(v => v.nombre == result.Key);
-                var longResult = longList.FirstOrDefault(v => v.nombre == result.Key);
-                var floatResult = floatList.FirstOrDefault(v => v.nombre == result.Key);
-                var doubleResult = doubleList.FirstOrDefault(v => v.nombre == result.Key);
-                var booleanResult = booleanList.FirstOrDefault(v => v.nombre == result.Key);
-                var charResult = charList.FirstOrDefault(v => v.nombre == result.Key);
-                var cadenaResult = cadenaList.FirstOrDefault(v => v.nombre == result.Key);
-
-                if (enteroResult is not null)
-                    Console.Write(enteroResult.valor);
-                
-                else if (shortResult is not null)
-                    Console.Write(shortResult.valor);
-
-                else if (longResult is not null)
-                    Console.Write(longResult.valor);
-
-                else if (floatResult is not null)
-                    Console.Write(floatResult.valor);
-
-                else if (doubleResult is not null)
-                    Console.Write(doubleResult.valor);
-
-                else if (booleanResult is not null)
-                    Console.Write(booleanResult.valor);
-
-                else if (charResult is not null)
-                    Console.Write(charResult.valor);
-
-                else if (cadenaResult is not null)
-                    Console.Write(cadenaResult.valor);
-            }
-        }
-
-        if(Regex.IsMatch(valor, patronPrintln))
-        {
-            int indiceComillasInicio = valor.IndexOf('"');
-            int indiceComillasFin = valor.LastIndexOf('"');
-
-            string valorEntreComillas = valor.Substring(indiceComillasInicio + 1, indiceComillasFin - indiceComillasInicio - 1);
-            Console.WriteLine(valorEntreComillas);
-        }
-
-        else if (Regex.IsMatch(valor, patronPrintlnConVariable))
-        {
-            int indiceParentesisInicio = valor.IndexOf('(');
-            int indiceParentesisFin = valor.IndexOf(')');
-
-            string valorEntreParentesis = valor.Substring(indiceParentesisInicio + 1, indiceParentesisFin - indiceParentesisInicio - 1);
-
-            var result = variables.FirstOrDefault(v => v.Key == valorEntreParentesis);
-
-            if (result.Key != null)
-            {
-                var enteroResult = enteroList.FirstOrDefault(v => v.nombre == result.Key);
-                var shortResult = shortList.FirstOrDefault(v => v.nombre == result.Key);
-                var longResult = longList.FirstOrDefault(v => v.nombre == result.Key);
-                var floatResult = floatList.FirstOrDefault(v => v.nombre == result.Key);
-                var doubleResult = doubleList.FirstOrDefault(v => v.nombre == result.Key);
-                var booleanResult = booleanList.FirstOrDefault(v => v.nombre == result.Key);
-                var charResult = charList.FirstOrDefault(v => v.nombre == result.Key);
-                var cadenaResult = cadenaList.FirstOrDefault(v => v.nombre == result.Key);
-
-                if (enteroResult is not null)
-                    Console.WriteLine(enteroResult.valor);
-
-                else if (shortResult is not null)
-                    Console.WriteLine(shortResult.valor);
-
-                else if (longResult is not null)
-                    Console.WriteLine(longResult.valor);
-
-                else if (floatResult is not null)
-                    Console.WriteLine(floatResult.valor);
-
-                else if (doubleResult is not null)
-                    Console.WriteLine(doubleResult.valor);
-
-                else if (booleanResult is not null)
-                    Console.WriteLine(booleanResult.valor);
-
-                else if (charResult is not null)
-                    Console.WriteLine(charResult.valor);
-
-                else if (cadenaResult is not null)
-                    Console.WriteLine(cadenaResult.valor);
-            }
-        }
-
+        string valorEntreComillas = valor.Substring(indiceComillasInicio + 1, indiceComillasFin - indiceComillasInicio - 1);
+        Console.Write(valorEntreComillas);
         continue;
+    }
+
+    if (Regex.IsMatch(valor, patronPrintln))
+    {
+        int indiceComillasInicio = valor.IndexOf('"');
+        int indiceComillasFin = valor.LastIndexOf('"');
+
+        string valorEntreComillas = valor.Substring(indiceComillasInicio + 1, indiceComillasFin - indiceComillasInicio - 1);
+        Console.WriteLine(valorEntreComillas);
+        continue;
+    }
+
+    if (Regex.IsMatch(valor, patronPrintConVariable))
+    {
+        int indiceParentesisInicio = valor.IndexOf('(');
+        int indiceParentesisFin = valor.IndexOf(')');
+
+        string valorEntreParentesis = valor.Substring(indiceParentesisInicio + 1, indiceParentesisFin - indiceParentesisInicio - 1);
+
+        var result = variables.FirstOrDefault(v => v.Key == valorEntreParentesis);
+
+        if (result.Key != null)
+        {
+            var enteroResult = enteroList.FirstOrDefault(v => v.nombre == result.Key);
+            var shortResult = shortList.FirstOrDefault(v => v.nombre == result.Key);
+            var longResult = longList.FirstOrDefault(v => v.nombre == result.Key);
+            var floatResult = floatList.FirstOrDefault(v => v.nombre == result.Key);
+            var doubleResult = doubleList.FirstOrDefault(v => v.nombre == result.Key);
+            var booleanResult = booleanList.FirstOrDefault(v => v.nombre == result.Key);
+            var charResult = charList.FirstOrDefault(v => v.nombre == result.Key);
+            var cadenaResult = cadenaList.FirstOrDefault(v => v.nombre == result.Key);
+
+            if (enteroResult is not null)
+                Console.Write(enteroResult.valor);
+
+            else if (shortResult is not null)
+                Console.Write(shortResult.valor);
+
+            else if (longResult is not null)
+                Console.Write(longResult.valor);
+
+            else if (floatResult is not null)
+                Console.Write(floatResult.valor);
+
+            else if (doubleResult is not null)
+                Console.Write(doubleResult.valor);
+
+            else if (booleanResult is not null)
+                Console.Write(booleanResult.valor);
+
+            else if (charResult is not null)
+                Console.Write(charResult.valor);
+
+            else if (cadenaResult is not null)
+                Console.Write(cadenaResult.valor);
+            else
+                variableNoEncontrada = result.Key;
+            continue;
+        }
+        else
+            variableNoEncontrada = valorEntreParentesis;
+    }
+
+    else if (Regex.IsMatch(valor, patronPrintlnConVariable))
+    {
+        int indiceParentesisInicio = valor.IndexOf('(');
+        int indiceParentesisFin = valor.IndexOf(')');
+
+        string valorEntreParentesis = valor.Substring(indiceParentesisInicio + 1, indiceParentesisFin - indiceParentesisInicio - 1);
+
+        var result = variables.FirstOrDefault(v => v.Key == valorEntreParentesis);
+
+        if (result.Key != null)
+        {
+            var enteroResult = enteroList.FirstOrDefault(v => v.nombre == result.Key);
+            var shortResult = shortList.FirstOrDefault(v => v.nombre == result.Key);
+            var longResult = longList.FirstOrDefault(v => v.nombre == result.Key);
+            var floatResult = floatList.FirstOrDefault(v => v.nombre == result.Key);
+            var doubleResult = doubleList.FirstOrDefault(v => v.nombre == result.Key);
+            var booleanResult = booleanList.FirstOrDefault(v => v.nombre == result.Key);
+            var charResult = charList.FirstOrDefault(v => v.nombre == result.Key);
+            var cadenaResult = cadenaList.FirstOrDefault(v => v.nombre == result.Key);
+
+            if (enteroResult is not null)
+                Console.WriteLine(enteroResult.valor);
+
+            else if (shortResult is not null)
+                Console.WriteLine(shortResult.valor);
+
+            else if (longResult is not null)
+                Console.WriteLine(longResult.valor);
+
+            else if (floatResult is not null)
+                Console.WriteLine(floatResult.valor);
+
+            else if (doubleResult is not null)
+                Console.WriteLine(doubleResult.valor);
+
+            else if (booleanResult is not null)
+                Console.WriteLine(booleanResult.valor);
+
+            else if (charResult is not null)
+                Console.WriteLine(charResult.valor);
+
+            else if (cadenaResult is not null)
+                Console.WriteLine(cadenaResult.valor);
+
+            continue;
+        }
+        else
+            variableNoEncontrada = valorEntreParentesis;
     }
 
     //Entero
@@ -742,14 +753,30 @@ while (true)
 
             else if (valor.StartsWith("p"))
             {
-                //if (Regex.IsMatch(valor, patronPrint))
-                //{
-                //    Console.WriteLine("Se puede imprimir");
-                //}
-                //else
-                //{
-                //    Console.WriteLine("No se puede imprimir");
-                //}
+                string mensajeError = "Entrada no válida: ";
+
+                if(Regex.IsMatch(valor,patronPrintConVariable) || Regex.IsMatch(valor,patronPrintlnConVariable))
+                    Console.WriteLine($"No se reconoce '{variableNoEncontrada}'");
+
+                else
+                {
+                    // Verificar si es "print" o "println"
+                    if (!(valor.StartsWith("print") || valor.StartsWith("println")))
+                        mensajeError += "debe comenzar con 'print' o 'println'. ";
+
+                    // Verificar si tiene dos puntos
+                    if (!valor.Contains("("))
+                        mensajeError += "debe contener '('. ";
+
+                    if (!valor.Contains("\""))
+                        mensajeError += "debe contener '\"'. ";
+
+                    if (!valor.Contains(")"))
+                        mensajeError += "debe contener ')'. ";
+
+                    Console.WriteLine(mensajeError);
+                    Console.WriteLine("Entrada no válida.");
+                }
             }
 
             else
