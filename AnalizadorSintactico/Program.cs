@@ -1,6 +1,7 @@
 ﻿using AnalizadorSintactico;
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.Drawing;
 using System.Reflection;
 using System.Text.RegularExpressions;
 
@@ -54,7 +55,7 @@ string patronBooleanVarConValor = @"^var _?[A-Za-z0-9]*: Boolean = [true false]+
 string patronBooleanVar = @"^var _?[A-Za-z0-9]*: Boolean$";
 
 //Char
-string patronCharValConValor = @"^val _?[A-Za-z0-9]*: Char = '\w'$";///debo arreglar que no se escriba true true
+string patronCharValConValor = @"^val _?[A-Za-z0-9]*: Char = '\w'$";
 string patronCharVal = @"^val _?[A-Za-z0-9]*: Char$";
 
 string patronCharVarConValor = @"^var _?[A-Za-z0-9]*: Char = '\w'$";
@@ -154,48 +155,52 @@ while (true)
 
         string valorEntreParentesis = valor.Substring(indiceParentesisInicio + 1, indiceParentesisFin - indiceParentesisInicio - 1);
 
-        var result = variables.FirstOrDefault(v => v.Key == valorEntreParentesis);
-
-        if (result.Key != null)
+        if (VerificarQueNoSeaUnaPalabraReservada(valorEntreParentesis) == false)
         {
-            var enteroResult = enteroList.FirstOrDefault(v => v.nombre == result.Key);
-            var shortResult = shortList.FirstOrDefault(v => v.nombre == result.Key);
-            var longResult = longList.FirstOrDefault(v => v.nombre == result.Key);
-            var floatResult = floatList.FirstOrDefault(v => v.nombre == result.Key);
-            var doubleResult = doubleList.FirstOrDefault(v => v.nombre == result.Key);
-            var booleanResult = booleanList.FirstOrDefault(v => v.nombre == result.Key);
-            var charResult = charList.FirstOrDefault(v => v.nombre == result.Key);
-            var cadenaResult = cadenaList.FirstOrDefault(v => v.nombre == result.Key);
+            var result = variables.FirstOrDefault(v => v.Key == valorEntreParentesis);
+            if (result.Key != null)
+            {
+                var enteroResult = enteroList.FirstOrDefault(v => v.nombre == result.Key);
+                var shortResult = shortList.FirstOrDefault(v => v.nombre == result.Key);
+                var longResult = longList.FirstOrDefault(v => v.nombre == result.Key);
+                var floatResult = floatList.FirstOrDefault(v => v.nombre == result.Key);
+                var doubleResult = doubleList.FirstOrDefault(v => v.nombre == result.Key);
+                var booleanResult = booleanList.FirstOrDefault(v => v.nombre == result.Key);
+                var charResult = charList.FirstOrDefault(v => v.nombre == result.Key);
+                var cadenaResult = cadenaList.FirstOrDefault(v => v.nombre == result.Key);
 
-            if (enteroResult is not null)
-                Console.Write(enteroResult.valor);
+                if (enteroResult is not null)
+                    Console.Write(enteroResult.valor);
 
-            else if (shortResult is not null)
-                Console.Write(shortResult.valor);
+                else if (shortResult is not null)
+                    Console.Write(shortResult.valor);
 
-            else if (longResult is not null)
-                Console.Write(longResult.valor);
+                else if (longResult is not null)
+                    Console.Write(longResult.valor);
 
-            else if (floatResult is not null)
-                Console.Write(floatResult.valor);
+                else if (floatResult is not null)
+                    Console.Write(floatResult.valor);
 
-            else if (doubleResult is not null)
-                Console.Write(doubleResult.valor);
+                else if (doubleResult is not null)
+                    Console.Write(doubleResult.valor);
 
-            else if (booleanResult is not null)
-                Console.Write(booleanResult.valor);
+                else if (booleanResult is not null)
+                    Console.Write(booleanResult.valor);
 
-            else if (charResult is not null)
-                Console.Write(charResult.valor);
+                else if (charResult is not null)
+                    Console.Write(charResult.valor);
 
-            else if (cadenaResult is not null)
-                Console.Write(cadenaResult.valor);
+                else if (cadenaResult is not null)
+                    Console.Write(cadenaResult.valor);
+                else
+                    variableNoEncontrada = result.Key;
+                continue;
+            }
             else
-                variableNoEncontrada = result.Key;
-            continue;
+                variableNoEncontrada = valorEntreParentesis;
         }
         else
-            variableNoEncontrada = valorEntreParentesis;
+            continue;
     }
 
     else if (Regex.IsMatch(valor, patronPrintlnConVariable))
@@ -205,47 +210,51 @@ while (true)
 
         string valorEntreParentesis = valor.Substring(indiceParentesisInicio + 1, indiceParentesisFin - indiceParentesisInicio - 1);
 
-        var result = variables.FirstOrDefault(v => v.Key == valorEntreParentesis);
-
-        if (result.Key != null)
+        if (VerificarQueNoSeaUnaPalabraReservada(valorEntreParentesis) == false)
         {
-            var enteroResult = enteroList.FirstOrDefault(v => v.nombre == result.Key);
-            var shortResult = shortList.FirstOrDefault(v => v.nombre == result.Key);
-            var longResult = longList.FirstOrDefault(v => v.nombre == result.Key);
-            var floatResult = floatList.FirstOrDefault(v => v.nombre == result.Key);
-            var doubleResult = doubleList.FirstOrDefault(v => v.nombre == result.Key);
-            var booleanResult = booleanList.FirstOrDefault(v => v.nombre == result.Key);
-            var charResult = charList.FirstOrDefault(v => v.nombre == result.Key);
-            var cadenaResult = cadenaList.FirstOrDefault(v => v.nombre == result.Key);
+            var result = variables.FirstOrDefault(v => v.Key == valorEntreParentesis);
+            if (result.Key != null)
+            {
+                var enteroResult = enteroList.FirstOrDefault(v => v.nombre == result.Key);
+                var shortResult = shortList.FirstOrDefault(v => v.nombre == result.Key);
+                var longResult = longList.FirstOrDefault(v => v.nombre == result.Key);
+                var floatResult = floatList.FirstOrDefault(v => v.nombre == result.Key);
+                var doubleResult = doubleList.FirstOrDefault(v => v.nombre == result.Key);
+                var booleanResult = booleanList.FirstOrDefault(v => v.nombre == result.Key);
+                var charResult = charList.FirstOrDefault(v => v.nombre == result.Key);
+                var cadenaResult = cadenaList.FirstOrDefault(v => v.nombre == result.Key);
 
-            if (enteroResult is not null)
-                Console.WriteLine(enteroResult.valor);
+                if (enteroResult is not null)
+                    Console.WriteLine(enteroResult.valor);
 
-            else if (shortResult is not null)
-                Console.WriteLine(shortResult.valor);
+                else if (shortResult is not null)
+                    Console.WriteLine(shortResult.valor);
 
-            else if (longResult is not null)
-                Console.WriteLine(longResult.valor);
+                else if (longResult is not null)
+                    Console.WriteLine(longResult.valor);
 
-            else if (floatResult is not null)
-                Console.WriteLine(floatResult.valor);
+                else if (floatResult is not null)
+                    Console.WriteLine(floatResult.valor);
 
-            else if (doubleResult is not null)
-                Console.WriteLine(doubleResult.valor);
+                else if (doubleResult is not null)
+                    Console.WriteLine(doubleResult.valor);
 
-            else if (booleanResult is not null)
-                Console.WriteLine(booleanResult.valor);
+                else if (booleanResult is not null)
+                    Console.WriteLine(booleanResult.valor);
 
-            else if (charResult is not null)
-                Console.WriteLine(charResult.valor);
+                else if (charResult is not null)
+                    Console.WriteLine(charResult.valor);
 
-            else if (cadenaResult is not null)
-                Console.WriteLine(cadenaResult.valor);
+                else if (cadenaResult is not null)
+                    Console.WriteLine(cadenaResult.valor);
 
-            continue;
+                continue;
+            }
+            else
+                variableNoEncontrada = valorEntreParentesis;
         }
         else
-            variableNoEncontrada = valorEntreParentesis;
+            continue;
     }
 
     //Entero
@@ -265,12 +274,12 @@ while (true)
         }
         else
         {
-            entero = new Entero(nombre, int.Parse(valorDespuesDelIgual));
-            enteroList.Add(entero);
-            variables.Add(entero.nombre, true);
-
-            //Console.WriteLine("Nombre de la variable: " + entero.nombre);
-            //Console.WriteLine("Valor: " + entero.valor);
+            if(VerificarQueNoSeaUnaPalabraReservada(nombre) == false)
+            {
+                entero = new Entero(nombre, int.Parse(valorDespuesDelIgual));
+                enteroList.Add(entero);
+                variables.Add(entero.nombre, true);
+            }
         }
     }
     //Entero
@@ -287,9 +296,13 @@ while (true)
         }
         else
         {
-            entero = new Entero(nombre);
-            enteroList.Add(entero);
-            variables.Add(entero.nombre, true);
+
+            if (VerificarQueNoSeaUnaPalabraReservada(nombre) == false)
+            {
+                entero = new Entero(nombre);
+                enteroList.Add(entero);
+                variables.Add(entero.nombre, true);
+            }
 
             //Console.WriteLine("Nombre de la variable: " + entero.nombre);
             ////Console.WriteLine("Valor: " + entero.valor);
@@ -322,9 +335,12 @@ while (true)
         }
         else
         {
-            mishort = new Short(nombre, short.Parse(valorDespuesDelIgual));
-            shortList.Add(mishort);
-            variables.Add(mishort.nombre, true);
+            if (VerificarQueNoSeaUnaPalabraReservada(nombre) == false)
+            {
+                mishort = new Short(nombre, short.Parse(valorDespuesDelIgual));
+                shortList.Add(mishort);
+                variables.Add(mishort.nombre, true);
+            }
 
             //Console.WriteLine("Nombre de la variable: " + mishort.nombre);
             //Console.WriteLine("Valor: " + mishort.valor);
@@ -344,15 +360,18 @@ while (true)
         }
         else
         {
-            mishort = new Short(nombre);
-            shortList.Add(mishort);
-            variables.Add(mishort.nombre, true);
+            if (VerificarQueNoSeaUnaPalabraReservada(nombre) == false)
+            {
+                mishort = new Short(nombre);
+                shortList.Add(mishort);
+                variables.Add(mishort.nombre, true);
+            }
 
             //Console.WriteLine("Nombre de la variable: " + mishort.nombre);
             //Console.WriteLine("Valor: " + mishort.valor);
         }
     }
-
+    //Long
     else if (Regex.IsMatch(valor, patronLongValConValor) || Regex.IsMatch(valor, patronLongVarConValor))
     {
         int inicioNombre = valor.IndexOf(' ');
@@ -369,9 +388,12 @@ while (true)
         }
         else
         {
-            milong = new Long(nombre, long.Parse(valorDespuesDelIgual));
-            longList.Add(milong);
-            variables.Add(milong.nombre, true);
+            if (VerificarQueNoSeaUnaPalabraReservada(nombre) == false)
+            {
+                milong = new Long(nombre, long.Parse(valorDespuesDelIgual));
+                longList.Add(milong);
+                variables.Add(milong.nombre, true);
+            }
 
             //Console.WriteLine("Nombre de la variable: " + milong.nombre);
             //Console.WriteLine("Valor: " + milong.valor);
@@ -391,9 +413,12 @@ while (true)
         }
         else
         {
-            milong = new Long(nombre);
-            longList.Add(milong);
-            variables.Add(milong.nombre, true);
+            if (VerificarQueNoSeaUnaPalabraReservada(nombre) == false)
+            {
+                milong = new Long(nombre);
+                longList.Add(milong);
+                variables.Add(milong.nombre, true);
+            }
 
             //Console.WriteLine("Nombre de la variable: " + milong.nombre);
             //Console.WriteLine("Valor: " + milong.valor);
@@ -416,9 +441,12 @@ while (true)
         }
         else
         {
-            mifloat = new Float(nombre, float.Parse(valorDespuesDelIgual));
-            floatList.Add(mifloat);
-            variables.Add(mifloat.nombre, true);
+            if (VerificarQueNoSeaUnaPalabraReservada(nombre) == false)
+            {
+                mifloat = new Float(nombre, float.Parse(valorDespuesDelIgual));
+                floatList.Add(mifloat);
+                variables.Add(mifloat.nombre, true);
+            }
 
             //Console.WriteLine("Nombre de la variable: " + mifloat.nombre);
             //Console.WriteLine("Valor: " + mifloat.valor);
@@ -438,9 +466,12 @@ while (true)
         }
         else
         {
-            mifloat = new Float(nombre);
-            floatList.Add(mifloat);
-            variables.Add(mifloat.nombre, true);
+            if (VerificarQueNoSeaUnaPalabraReservada(nombre) == false)
+            {
+                mifloat = new Float(nombre);
+                floatList.Add(mifloat);
+                variables.Add(mifloat.nombre, true);
+            }
 
             //Console.WriteLine("Nombre de la variable: " + mifloat.nombre);
             //Console.WriteLine("Valor: " + mifloat.valor);
@@ -463,9 +494,12 @@ while (true)
         }
         else
         {
-            midouble = new miDouble(nombre, double.Parse(valorDespuesDelIgual));
-            doubleList.Add(midouble);
-            variables.Add(midouble.nombre, true);
+            if (VerificarQueNoSeaUnaPalabraReservada(nombre) == false)
+            {
+                midouble = new miDouble(nombre, double.Parse(valorDespuesDelIgual));
+                doubleList.Add(midouble);
+                variables.Add(midouble.nombre, true);
+            }
 
             //Console.WriteLine("Nombre de la variable: " + midouble.nombre);
             //Console.WriteLine("Valor: " + midouble.valor);
@@ -485,9 +519,12 @@ while (true)
         }
         else
         {
-            midouble = new miDouble(nombre);
-            doubleList.Add(midouble);
-            variables.Add(midouble.nombre, true);
+            if (VerificarQueNoSeaUnaPalabraReservada(nombre) == false)
+            {
+                midouble = new miDouble(nombre);
+                doubleList.Add(midouble);
+                variables.Add(midouble.nombre, true);
+            }
 
             //Console.WriteLine("Nombre de la variable: " + midouble.nombre);
             //Console.WriteLine("Valor: " + midouble.valor);
@@ -510,9 +547,12 @@ while (true)
         }
         else
         {
-            boolean = new miBoolean(nombre, bool.Parse(valorDespuesDelIgual));
-            booleanList.Add(boolean);
-            variables.Add(boolean.nombre, true);
+            if (VerificarQueNoSeaUnaPalabraReservada(nombre) == false)
+            {
+                boolean = new miBoolean(nombre, bool.Parse(valorDespuesDelIgual));
+                booleanList.Add(boolean);
+                variables.Add(boolean.nombre, true);
+            }
 
             //Console.WriteLine("Nombre de la variable: " + boolean.nombre);
             //Console.WriteLine("Valor: " + boolean.valor);
@@ -532,9 +572,12 @@ while (true)
         }
         else
         {
-            boolean = new miBoolean(nombre);
-            booleanList.Add(boolean);
-            variables.Add(boolean.nombre, true);
+            if (VerificarQueNoSeaUnaPalabraReservada(nombre) == false)
+            {
+                boolean = new miBoolean(nombre);
+                booleanList.Add(boolean);
+                variables.Add(boolean.nombre, true);
+            }
 
             //Console.WriteLine("Nombre de la variable: " + boolean.nombre);
             //Console.WriteLine("Valor: " + boolean.valor);
@@ -564,16 +607,19 @@ while (true)
         }
         else
         {
-            michar = new miChar(nombre, charValor);
-            charList.Add(michar);
-            variables.Add(michar.nombre, true);
+            if (VerificarQueNoSeaUnaPalabraReservada(nombre) == false)
+            {
+                michar = new miChar(nombre, charValor);
+                charList.Add(michar);
+                variables.Add(michar.nombre, true);
+            }
 
             //Console.WriteLine("Nombre de la variable en miChar: " + michar.nombre);
             //Console.WriteLine("Valor: " + michar.valor);
         }
     }
     //Char
-    else if (Regex.IsMatch(valor, patronCharVal) )
+    else if (Regex.IsMatch(valor, patronCharVar) )
     {
         int inicioNombre = valor.IndexOf(' ');
         int finNombre = valor.IndexOf(':');
@@ -586,9 +632,12 @@ while (true)
         }
         else
         {
-            michar = new miChar(nombre);
-            charList.Add(michar);
-            variables.Add(michar.nombre, true);
+            if (VerificarQueNoSeaUnaPalabraReservada(nombre) == false)
+            {
+                michar = new miChar(nombre);
+                charList.Add(michar);
+                variables.Add(michar.nombre, true);
+            }
 
             //Console.WriteLine("Nombre de la variable: " + michar.nombre);
             //Console.WriteLine("Valor: " + michar.valor);
@@ -617,10 +666,13 @@ while (true)
         }
         else
         {
-            // Crea una instancia de la clase Cadena
-            cadena = new Cadena(nombre, valorDespuesDelIgual);
-            cadenaList.Add(cadena);
-            variables.Add(cadena.nombre, true);
+            if (VerificarQueNoSeaUnaPalabraReservada(nombre) == false)
+            {
+                // Crea una instancia de la clase Cadena
+                cadena = new Cadena(nombre, valorDespuesDelIgual);
+                cadenaList.Add(cadena);
+                variables.Add(cadena.nombre, true);
+            }
 
             // Imprime los resultados
             //Console.WriteLine("Nombre de la variable: " + cadena.nombre);
@@ -641,9 +693,12 @@ while (true)
         }
         else
         {
-            cadena = new Cadena(nombre);
-            cadenaList.Add(cadena);
-            variables.Add(cadena.nombre, true);
+            if (VerificarQueNoSeaUnaPalabraReservada(nombre) == false)
+            {
+                cadena = new Cadena(nombre);
+                cadenaList.Add(cadena);
+                variables.Add(cadena.nombre, true);
+            }
 
             //Console.WriteLine("Nombre de la variable: " + cadena.nombre);
             //Console.WriteLine("Valor: " + cadena.valor);
@@ -787,4 +842,33 @@ while (true)
 
 
     Console.WriteLine();
+}
+
+
+
+static bool VerificarQueNoSeaUnaPalabraReservada(string nombre)
+{
+    foreach (var tipo in new[] {
+    "Int", "Short", "Byte", "Long", "Float", "Double", "Boolean", "Char", "String", "var", "val", "main", "fun",
+    "const", "object", "companion", "private", "public", "protected", "internal", "null", "if", "else", "when", "for",
+    "array", "ranges", "list", "while", "do", "false", "true", "constructor", "init", "typealias", "interface", "override",
+    "abstract", "class", "super", "data", "enum",
+    "as", "as?", "break", "class", "continue", "do", "else", "false", "for", "fun", "if", "in", "!in", "interface", "is",
+    "!is", "null", "object", "package", "return", "super", "this", "throw", "true", "try", "typealias", "val", "var", "when",
+    "while", "by", "catch", "constructor", "delegate", "dynamic", "field", "file", "finally", "get", "import", "init",
+    "param", "property", "receiver", "set", "setparam", "where", "actual", "abstract", "annotation", "companion", "const",
+    "crossinline", "data", "enum", "expect", "external", "final", "infix", "inline", "inner", "internal", "lateinit",
+    "noinline", "open", "operator", "out", "override", "private", "protected", "public", "reified", "sealed", "suspend",
+    "tailrec", "vararg", "field", "it", "value"
+    })
+
+    {
+        if (nombre == tipo)
+        {
+            Console.WriteLine("-----------------------------------------------------------------");
+            Console.WriteLine($"'{nombre}' es una palabra reservada");
+            return true;
+        }    
+    }
+    return false;
 }
