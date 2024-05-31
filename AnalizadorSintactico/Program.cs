@@ -82,6 +82,10 @@ string patronPrintlnConVariable = @"^println\([A-Za-z0-9]+\)$";
 string patronAsignacion = @"^_?[A-Za-z0-9]* = _?[A-Za-z0-9]*";
 
 
+//patron para sumar
+string patronSumar = @"_?[A-Za-z0-9]* = \d+(\.\d+)? \+ \d+(\.\d+)?";
+
+
 //Clases
 Entero entero;
 Short mishort;
@@ -114,23 +118,7 @@ while (true)
     string valor = Console.ReadLine();
 
 
-    ////////////////////////////////Esta primera condicion creo que se puede eliminar
-    //if (Regex.IsMatch(valor, patronStringVal))
-    //{
-    //    int inicioNombrevarriable = valor.IndexOf(' ') + 1;
-    //    int finNombrevarriable = valor.IndexOf(':');
-    //    string nombrevarriable = valor.Substring(inicioNombrevarriable, finNombrevarriable - inicioNombrevarriable).Trim();
-
-    //    if (variables.ContainsKey(nombrevarriable))
-    //    {
-    //        Console.WriteLine($"Ya exiate una variable con este nombre'{nombrevarriable}'\n");
-    //        continue;
-    //    }
-    //    else
-    //    {
-    //        variables[nombrevarriable] = true;
-    //    }
-    //}
+    
 
     if (Regex.IsMatch(valor, patronPrint))
     {
@@ -261,6 +249,13 @@ while (true)
             continue;
     }
 
+    ///Sumar
+    if (Regex.IsMatch(valor, patronSumar))
+    {
+        Sumar(valor);
+        continue;
+    }
+
     ///igualar
     if (Regex.IsMatch(valor, patronAsignacion))
     {
@@ -268,7 +263,6 @@ while (true)
         string variable1 = valor.Substring(0, indiceIgual).Trim();
         string variable2 = valor.Substring(indiceIgual + 1).Trim();
 
-        //variable2 = variable2.Replace("'", "").Replace("\"", "");
 
         var result = variables.FirstOrDefault(v => v.Key == variable1);
         if (result.Key != null)
@@ -421,18 +415,7 @@ while (true)
                 variables.Add(entero.nombre, true);
             }
 
-            //Console.WriteLine("Nombre de la variable: " + entero.nombre);
-            ////Console.WriteLine("Valor: " + entero.valor);
-
-            //Console.WriteLine("Imprimiendo el nombre de este lado: " + nombre);
-            //Console.WriteLine("Probando la lista: ");
-
-            //// Aquí hay algo raro, no sé por qué con " " me da null reference...
-            //var num1 = enteroList.FirstOrDefault(e => e.nombre.Equals("num1"));
-            ////var num2 = enteroList.FirstOrDefault(e => e.nombre == "num2");
-
-            //Console.WriteLine("Variable1: " + num1?.nombre);
-            ////Console.WriteLine("Variable2: " + num2.nombre);
+           
         }
     }
     //Short
@@ -484,8 +467,7 @@ while (true)
                 variables.Add(mishort.nombre, true);
             }
 
-            //Console.WriteLine("Nombre de la variable: " + mishort.nombre);
-            //Console.WriteLine("Valor: " + mishort.valor);
+            
         }
     }
     //Long
@@ -512,8 +494,7 @@ while (true)
                 variables.Add(milong.nombre, true);
             }
 
-            //Console.WriteLine("Nombre de la variable: " + milong.nombre);
-            //Console.WriteLine("Valor: " + milong.valor);
+            
         }
     }
     //Long
@@ -537,8 +518,7 @@ while (true)
                 variables.Add(milong.nombre, true);
             }
 
-            //Console.WriteLine("Nombre de la variable: " + milong.nombre);
-            //Console.WriteLine("Valor: " + milong.valor);
+            
         }
     }
     //Float
@@ -565,8 +545,7 @@ while (true)
                 variables.Add(mifloat.nombre, true);
             }
 
-            //Console.WriteLine("Nombre de la variable: " + mifloat.nombre);
-            //Console.WriteLine("Valor: " + mifloat.valor);
+          
         }
     }
     //Float
@@ -590,8 +569,7 @@ while (true)
                 variables.Add(mifloat.nombre, true);
             }
 
-            //Console.WriteLine("Nombre de la variable: " + mifloat.nombre);
-            //Console.WriteLine("Valor: " + mifloat.valor);
+            
         }
     }
     //Double
@@ -618,8 +596,7 @@ while (true)
                 variables.Add(midouble.nombre, true);
             }
 
-            //Console.WriteLine("Nombre de la variable: " + midouble.nombre);
-            //Console.WriteLine("Valor: " + midouble.valor);
+
         }
     }
     //Double
@@ -643,8 +620,7 @@ while (true)
                 variables.Add(midouble.nombre, true);
             }
 
-            //Console.WriteLine("Nombre de la variable: " + midouble.nombre);
-            //Console.WriteLine("Valor: " + midouble.valor);
+           
         }
     }
     //Boolean
@@ -671,8 +647,7 @@ while (true)
                 variables.Add(boolean.nombre, true);
             }
 
-            //Console.WriteLine("Nombre de la variable: " + boolean.nombre);
-            //Console.WriteLine("Valor: " + boolean.valor);
+           
         }
     }
     //Boolean
@@ -696,8 +671,6 @@ while (true)
                 variables.Add(boolean.nombre, true);
             }
 
-            //Console.WriteLine("Nombre de la variable: " + boolean.nombre);
-            //Console.WriteLine("Valor: " + boolean.valor);
         }
     }
     //Char
@@ -731,8 +704,7 @@ while (true)
                 variables.Add(michar.nombre, true);
             }
 
-            //Console.WriteLine("Nombre de la variable en miChar: " + michar.nombre);
-            //Console.WriteLine("Valor: " + michar.valor);
+          
         }
     }
     //Char
@@ -756,8 +728,7 @@ while (true)
                 variables.Add(michar.nombre, true);
             }
 
-            //Console.WriteLine("Nombre de la variable: " + michar.nombre);
-            //Console.WriteLine("Valor: " + michar.valor);
+            
         }
     }
     //String
@@ -791,9 +762,7 @@ while (true)
                 variables.Add(cadena.nombre, true);
             }
 
-            // Imprime los resultados
-            //Console.WriteLine("Nombre de la variable: " + cadena.nombre);
-            //Console.WriteLine("Valor: " + cadena.valor);
+            
         }
     }
     //String
@@ -817,8 +786,7 @@ while (true)
                 variables.Add(cadena.nombre, true);
             }
 
-            //Console.WriteLine("Nombre de la variable: " + cadena.nombre);
-            //Console.WriteLine("Valor: " + cadena.valor);
+            
         }
     }
     //Mensajes de error
@@ -832,12 +800,6 @@ while (true)
         else
         {
             Console.WriteLine("Syntaxis incorrecta");
-
-            ///// var o val
-            //// que contenga :
-            //// que contenga el tipo de dato
-            ///
-
 
             if (valor.StartsWith("v"))
             {
@@ -892,18 +854,7 @@ while (true)
                     mensajeError += "debe contener un tipo de dato válido. ";
                     errorPosicion = valor.IndexOf(':') + 1;
                 }
-                //Verificar si el nombre contiene espacios o empieza con numeros
-                //int inicioNombre2 = valor.IndexOf(' ') + 1;
-                //int finNombre2 = valor.IndexOf(':');
-                //if (finNombre2 > inicioNombre2)
-                //{
-                //    string nombre2 = valor.Substring(inicioNombre2, finNombre2 - inicioNombre2).Trim();
-                //    if (!nombre2.Contains(' ') || char.IsDigit(nombre2[0]))
-                //    {
-                //        nombreValido = false;
-                //        mensajeError += "el nombre no debe contener espacios ni empezar con un número. ";
-                //    }
-                //}
+                
 
                 // Verificar si tiene el signo igual
                 if (valor.Contains("="))
@@ -1060,4 +1011,53 @@ bool BuscarValorVariable(string nombre)
     }
     else
         return false;
+}
+
+
+
+void Sumar(string dato)
+{
+    int indiceIgual = dato.IndexOf('=');
+
+    int indiceMas = dato.IndexOf('+', indiceIgual);
+    string variable = dato.Substring(0, indiceIgual).Trim();
+
+    string dato1 = dato.Substring(indiceIgual + 1, indiceMas - indiceIgual - 1).Trim();
+    string dato2 = dato.Substring(indiceMas + 1).Trim();
+
+    Console.WriteLine($"Variable: {variable}");
+    Console.WriteLine($"Dato 1: {dato1}");
+    Console.WriteLine($"Dato 2: {dato2}");
+
+    var result = variables.FirstOrDefault(v => v.Key == variable);
+    if (result.Key != null)
+    {
+        var enteroResult = enteroList.FirstOrDefault(v => v.nombre == result.Key);
+        var shortResult = shortList.FirstOrDefault(v => v.nombre == result.Key);
+        var longResult = longList.FirstOrDefault(v => v.nombre == result.Key);
+        var floatResult = floatList.FirstOrDefault(v => v.nombre == result.Key);
+        var doubleResult = doubleList.FirstOrDefault(v => v.nombre == result.Key);
+        var cadenaResult = cadenaList.FirstOrDefault(v => v.nombre == result.Key);
+
+        if (enteroResult is not null && int.TryParse(dato1, out int entero1) && int.TryParse(dato2, out int entero2))
+            enteroResult.valor = entero1 + entero2;
+
+        else if (shortResult is not null && short.TryParse(dato1, out short short1) && short.TryParse(dato2, out short short2))
+            shortResult.valor = (short) (short1 + short2);
+
+        else if (longResult is not null && long.TryParse(dato1, out long long1) && long.TryParse(dato2, out long long2))
+            longResult.valor = long1 + long2;
+
+        else if (floatResult is not null && float.TryParse(dato1, out float float1) && float.TryParse(dato2, out float float2))
+            floatResult.valor = float1 + float2;
+
+        else if (doubleResult is not null && double.TryParse(dato1, out double double1) && double.TryParse(dato2, out double double2))
+            doubleResult.valor = double1 + double2;
+
+        
+        else
+            Console.WriteLine($"Los tipos de datos '{variable}', '{dato1}' y '{dato2}' no son compatibles");
+    }
+    else
+        Console.WriteLine($"No se reconoce '{variable}'");
 }
