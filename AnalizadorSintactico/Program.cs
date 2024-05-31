@@ -844,12 +844,14 @@ while (true)
                 // Validación adicional
                 bool nombreValido = true;
                 string mensajeError = "Entrada no válida: ";
+                int errorPosicion = -1;
 
                 // Verificar si es "var" o "val"
                 if (!(valor.StartsWith("var") || valor.StartsWith("val")))
                 {
                     nombreValido = false;
                     mensajeError += "debe comenzar con 'var' o 'val'. ";
+                    errorPosicion = valor.IndexOf(' ');
                 }
 
                 // Verificar si el nombre contiene espacio o empieza con un número
@@ -862,6 +864,7 @@ while (true)
                     {
                         nombreValido = false;
                         mensajeError += "el nombre no debe contener espacios ni empezar con un número. ";
+                        errorPosicion = inicioNombre;
                     }
                 }
 
@@ -870,6 +873,7 @@ while (true)
                 {
                     nombreValido = false;
                     mensajeError += "debe contener ':'. ";
+                    errorPosicion = valor.IndexOf(':') == -1 ? valor.Length : valor.IndexOf(':');
                 }
 
                 // Verificar si tiene un tipo de dato
@@ -886,6 +890,7 @@ while (true)
                 {
                     nombreValido = false;
                     mensajeError += "debe contener un tipo de dato válido. ";
+                    errorPosicion = valor.IndexOf(':') + 1;
                 }
                 //Verificar si el nombre contiene espacios o empieza con numeros
                 //int inicioNombre2 = valor.IndexOf(' ') + 1;
@@ -910,12 +915,19 @@ while (true)
                     {
                         nombreValido = false;
                         mensajeError += "debe contener el valor despues del '='. ";
+                        errorPosicion = indiceIgual;
                     }
                 }
 
                 if (!nombreValido)
                 {
                     Console.WriteLine(mensajeError);
+                    if (errorPosicion != -1)
+                    {
+                        Console.WriteLine($"Error en la posicion: {errorPosicion}");
+                        Console.WriteLine(valor);
+                        Console.WriteLine(new string('_', errorPosicion) + "^");
+                    }
                 }
                 else
                 {
@@ -926,6 +938,7 @@ while (true)
             else if (valor.StartsWith("p"))
             {
                 string mensajeError = "Entrada no válida: ";
+                int errorPosicion = -1;
 
                 if (Regex.IsMatch(valor, patronPrintConVariable) || Regex.IsMatch(valor, patronPrintlnConVariable))
                     Console.WriteLine($"No se reconoce '{variableNoEncontrada}'");
@@ -934,19 +947,40 @@ while (true)
                 {
                     // Verificar si es "print" o "println"
                     if (!(valor.StartsWith("print") || valor.StartsWith("println")))
+                    {
                         mensajeError += "debe comenzar con 'print' o 'println'. ";
+                        errorPosicion = valor.IndexOf(' ');
+                    }
+                        
 
                     // Verificar si tiene dos puntos
                     if (!valor.Contains("("))
+                    {
                         mensajeError += "debe contener '('. ";
+                        errorPosicion = valor.IndexOf('(') == -1 ? valor.Length : valor.IndexOf('(');
+                    }
+                        
 
                     if (!valor.Contains("\""))
+                    {
                         mensajeError += "debe contener '\"'. ";
+                        errorPosicion = valor.IndexOf('\"');
+                    }
+                       
 
                     if (!valor.Contains(")"))
+                    {
                         mensajeError += "debe contener ')'. ";
+                        errorPosicion = valor.IndexOf(')') == -1 ? valor.Length : valor.IndexOf(')');
+                    }
 
                     Console.WriteLine(mensajeError);
+                    if (errorPosicion != -1)
+                    {
+                        Console.WriteLine($"Error en la posicion: {errorPosicion}");
+                        Console.WriteLine(valor);
+                        Console.WriteLine(new string('_', errorPosicion) + "^");
+                    }
                     Console.WriteLine("Entrada no válida.");
                 }
             }
